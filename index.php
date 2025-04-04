@@ -23,7 +23,7 @@
     <title>Test...</title>
 </head>
 
-<body class="bg-indigo-500">
+<body class="bg-red-200">
     <h1>changed this ....</h1>
 </body>
 
