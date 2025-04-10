@@ -24,10 +24,10 @@
     <title>Test...</title>
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-pink-200">
     <div class="flex w-full h-full justify-center items-center">
-        <div class="bg-white h-50 w-100 self-center rounded-md shadow-md hover:scale-105 cursor-pointer hover:shadow-xl">
-            <h1> hello </h1>
+        <div class="bg-white h-50 w-100 self-center rounded-md shadow-md hover:scale-150 cursor-pointer hover:shadow-xl flex">
+            <h1 class="self-center mx-auto"> center text </h1>
         </div>
     </div>
 </body>
