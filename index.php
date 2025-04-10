@@ -20,11 +20,16 @@
 <head>
     <link rel="stylesheet" href="./src/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta http-equiv="refresh" content="1">
     <title>Test...</title>
 </head>
 
-<body class="bg-red-200">
-    <h1>changed this ....</h1>
+<body class="bg-gray-200">
+    <div class="flex w-full h-full justify-center items-center">
+        <div class="bg-white h-50 w-100 self-center rounded-md shadow-md hover:scale-105 cursor-pointer hover:shadow-xl">
+            <h1> hello </h1>
+        </div>
+    </div>
 </body>
 
 </html>
