@@ -1,27 +1,35 @@
+CREATE DATABASE IF NOT EXISTS `InventoryOrders`;
+use `InventoryOrders`;
+
+DROP TABLE IF EXISTS `Customer`;
+DROP TABLE IF EXISTS `Orders`;
+DROP TABLE IF EXISTS `Product`;
+DROP TABLE IF EXISTS `OrderProduct`;
+
 CREATE TABLE Customer (
-    customerID INT PRIMARY KEY,
-    customerName VARCHAR(100),
-    email VARCHAR(100),
-    address VARCHAR(255)
+    customerID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    customerName VARCHAR(25),
+    email VARCHAR(35),
+    addr VARCHAR(30)
 );
 
 CREATE TABLE Orders (
-    orderID INT PRIMARY KEY AUTO_INCREMENT,
-    customerID INT,
+    orderID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    customerID INT UNSIGNED,
     orderDate DATE,
-    status VARCHAR(50),
+    orderStatus VARCHAR(50),
     FOREIGN KEY (customerID) REFERENCES Customer(customerID)
 );
 
 CREATE TABLE Product (
-    productID INT PRIMARY KEY,
+    productID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     productName VARCHAR(100),
     quantity INT
 );
 
 CREATE TABLE OrderProduct (
-    orderID INT,
-    productID INT,
+    orderID INT UNSIGNED,
+    productID INT UNSIGNED,
     qty INT,
     PRIMARY KEY (orderID, productID),
     FOREIGN KEY (orderID) REFERENCES Orders(orderID),
