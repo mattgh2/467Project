@@ -1,4 +1,4 @@
-00<?php // Error stuff
+<?php // Error stuff
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -10,9 +10,6 @@
        global $pdoLegacy;
        return $pdoLegacy->query("select * from parts")->fetchAll(PDO::FETCH_ASSOC);
     }
-    $parts = query_parts();
-    $parts_0_url = $parts[0]['pictureURL'];
-    echo "<img src=\"$parts_0_url\"></a>";
 
 ?>
 
@@ -50,24 +47,34 @@
 <?php 
     echo<<<END
     <div class="w-full h-1/2 flex">
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl flex justify-center">
-    END;
-        echo "<div class=\"w-[90%] h-[40%] bg-red-200 mt-[5%]\">";
-            </div>
-        </div>
     END;
 
+    echo "<div class=\"w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl flex justify-center\">";
+        echo "<div class=\"w-[90%] h-[40%]  mt-[5%]\">";
+            $parts = query_parts();
+            $parts_0_url = $parts[0]['pictureURL'];
+            echo "<img src=\"$parts_0_url\" class='w-full h-full rounded-3xl'></a>";
+        echo "</div>";
+    echo "</div>";
 
-    echo<<<END
+
+    echo <<<END
         <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
         </div> 
+    END;
 
+    echo <<<END
         <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
         </div>
+    END;
 
+    echo <<<END
         <div class="w-[25%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
         </div>    
     </div>    
+    END;
+
+    echo <<<END
     <div class="w-full h-1/2 flex mt-[2%]">
         <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
         </div>
@@ -80,8 +87,11 @@
 
         <div class="w-[25%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
         </div>    
+    END;
+
+    echo <<<END
     </div> 
     END;
 ?>
 
-</body> </html>/html>
+</body> </html>
