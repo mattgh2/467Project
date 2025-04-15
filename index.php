@@ -43,9 +43,9 @@
     </div>
     <section class="w-full bg-red-100 h-[70vh] bg-cover bg-center bg-no-repeat bg-[url(https://i.imgur.com/qhzr0GB.jpeg)]">
         <div>
-            <div class="w-1/2 mx-auto text-center bg-blue-200 ">
-            <h1>djhfdsfh</h1>
-            <h2>djhfdsfh</h2>
+            <div class="w-1/2 mx-auto text-center bg-blue-200">
+            <h1>do you have a relationship with your father</h1>
+            <h2>whats that? whats a father?</h2>
             </div>
       </div>
  
