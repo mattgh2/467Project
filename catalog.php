@@ -10,7 +10,6 @@
        global $pdoLegacy;
        return $pdoLegacy->query("select * from parts")->fetchAll(PDO::FETCH_ASSOC);
     }
-
 ?>
 
 <html>
@@ -26,9 +25,8 @@
 <body class="w-screen h-screen m-0 bg-pink-100">
 
 <?php // functions
+function create 
 ?>
-<?php
-    echo <<<END
     <div class="w-full bg-white h-[7%] flex shadow-xl mb-[2%]">
         <div class="w-[10%] h-full flex justify-center items-center">
              <h1 class="flex justify-center items-center  ml-[1%]"> <a id='home-page' href="./index.php"> Home </a> </h1>
@@ -42,56 +40,50 @@
         </ul>
         </div>
     </div>
-    END;
-?>
+
+
+    <div class="h-screen grid grid-cols-5 gap-4 gap-x-10 p-6 auto-rows-[40vh]">
+        <div class="bg-red-200 rounded-3xl shadow-2xl"> </div> 
+    </div>
 <?php 
-    echo<<<END
-    <div class="w-full h-1/2 flex">
-    END;
 
-    echo "<div class=\"w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl flex justify-center\">";
-        echo "<div class=\"w-[90%] h-[40%]  mt-[5%]\">";
-            $parts = query_parts();
-            $parts_0_url = $parts[0]['pictureURL'];
-            echo "<img src=\"$parts_0_url\" class='w-full h-full rounded-3xl'></a>";
-        echo "</div>";
-    echo "</div>";
+ #   echo<<<END
+ #   <div class="w-full h-1/2 grid grid-cols-3">
+ #   END;
+
+ #   echo "<div class=\"w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl flex justify-center\">";
+ #       echo "<div class=\"w-[90%] h-[40%]  mt-[5%]\">";
+ #           $parts = query_parts();
+ #           $parts_0_url = $parts[0]['pictureURL'];
+ #           echo "<img src=\"$parts_0_url\" class='w-full h-full rounded-3xl'></a>";
+ #       echo "</div>";
+ #   echo "</div>";
 
 
-    echo <<<END
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
-        </div> 
-    END;
+ #   echo <<<END
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
+ #       </div> 
 
-    echo <<<END
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
-        </div>
-    END;
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
+ #       </div>
 
-    echo <<<END
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
-        </div>    
-    </div>    
-    END;
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
+ #       </div>    
 
-    echo <<<END
-    <div class="w-full h-1/2 flex mt-[2%]">
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
-        </div>
-  
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
-        </div> 
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
+ #       </div>
+ # 
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
+ #       </div> 
 
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
-        </div>
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
+ #       </div>
 
-        <div class="w-[25%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
-        </div>    
-    END;
+ #       <div class="w-[50%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
+ #       </div>    
 
-    echo <<<END
-    </div> 
-    END;
+ #   </div> 
+ #   END;
 ?>
 
 </body> </html>
