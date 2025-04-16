@@ -23,7 +23,7 @@ function createProductCard($part) : string {
     return <<<EOT
     <div class="bg-red-200 rounded-3xl shadow-2xl p-5">
         <!-- Image -->
-        <div class="w-full h-[50%] shadow-sm bg-center bg-[url($part[pictureURL])] bg-no-repeat bg-contain"></div>
+        <div class="w-full h-[50%] shadow-sm bg-center bg-no-repeat bg-contain" style="background-image: url('$part[pictureURL]')"></div>
 
         <!-- Description -->
         <div class="w-full h-[10%] mt-[2%]">
@@ -71,10 +71,10 @@ function createProductCard($part) : string {
 
 <html>
 <head>
-    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="./public/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <meta http-equiv="refresh" content="1"> -->
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>

@@ -16,17 +16,16 @@ include "dbconnect.php";
     <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
 
 
-    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="./public/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <meta http-equiv="refresh" content="1"> -->
     <title>Lite Up Ur Lyfe Auto Parts</title>
 
 </head>
 
 <body class="w-screen min-h-screen m-0 bg-gray-800 overflow-hidden">
-
     <nav id="nav-bar">
         <div class="w-full bg-[#55baf2] h-[7%] flex shadow-xl justify-between">
             <div class="w-[5%] h-full flex justify-center items-center">
@@ -42,7 +41,7 @@ include "dbconnect.php";
             </div>
         </div>
     </nav>
-    <section class="w-full bg-red-100 h-[70vh]  bg-cover bg-no-repeat bg-[url(./cat.png)]">
+    <section class="w-full bg-red-100 h-[70vh]  bg-cover bg-no-repeat" style="background-image: url(./cat.png)">
         <div>
             <div class="w-1/2 mx-auto text-center bg-indigo-500">
                 <h1>sameple text1</h1>
