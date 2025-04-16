@@ -1,1 +1,13 @@
 @import "tailwindcss";
+@layer utilities {
+  /* Remove spinner controls for Chrome, Safari, Edge, Opera */
+  .no-spin::-webkit-inner-spin-button,
+  .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Remove spinner controls for Firefox */
+  .no-spin {
+    -moz-appearance: textfield;
+  }
+}
