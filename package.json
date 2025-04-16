@@ -1,6 +1,26 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.4",
+    "@tailwindcss/cli": "^4.1.4"
+  },
+  "name": "467project",
+  "version": "1.0.0",
+  "main": "cart.js",
+  "devDependencies": {
     "tailwindcss": "^4.1.4"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattgh2/467Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattgh2/467Project/issues"
+  },
+  "homepage": "https://github.com/mattgh2/467Project#readme",
+  "description": ""
 }

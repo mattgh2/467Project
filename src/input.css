@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @layer utilities {
   /* Remove spinner controls for Chrome, Safari, Edge, Opera */
   .no-spin::-webkit-inner-spin-button,
