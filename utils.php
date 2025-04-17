@@ -60,7 +60,7 @@ function createProductCard($part) : string {
             </div>
             <!-- Add to cart button -->
             <div class="w-[70%] h-full flex  justify-center items-center">
-                <button id='$count' onclick="addToCart(this)" class=" cursor-pointer rounded-2xl h-2/3 bg-gray-900 shadow-lg w-full  drop-shadow-2xl font-bold tracking-wide text-white hover:bg-green-500 text-xl transition-all duration-300">Add To Cart</button>
+                <button id='$count' onclick="addToCart(this)" class=" cursor-pointer rounded-2xl h-2/3 bg-gray-900 shadow-lg w-full  drop-shadow-2xl font-bold tracking-wide text-white hover:bg-green-500 text-xl transition-colors duration-200 ease-in-out">Add To Cart</button>
             </div>
         </div>
     </div>

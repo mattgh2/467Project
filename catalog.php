@@ -28,7 +28,7 @@ require_once('utils.php');
         </div>
         <div class="max-w-md h-full flex mr-[2%]">
             <ul class="flex h-full items-center justify-center gap-10">
-                <li class=""> <a href="./catalog.php" class="text-white text-xl transform transition-transform duration-100 ease-in-out hover:text-shadow-lg/20"> Catalog </a> </li>
+                <li class=""> <a href="./catalog.php" class="text-white  text-xl transform transition-transform duration-100 ease-in-out hover:text-shadow-lg/20"> Catalog </a> </li>
                 <li> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Warehouse </a> </li>
                 <li class=""> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Admin </a> </li>
                 <div class=" flex flex-col w-10 relative">
@@ -68,37 +68,33 @@ require_once('utils.php');
             qty[i].value = quantities[i];    
         });
     }
-</script>
-    <script>
-        function addToCart(el) {
-            const id = el.id;
 
-            if (!sessionStorage.getItem(id)) {
-                let cartCounter = document.getElementById('cart-counter');
-                let count = parseInt(cartCounter.innerHTML);
-                cartCounter.innerHTML = count + 1;
-            };
+    let cartCounter = document.getElementById('cart-counter');
+    cartCounter.innerHTML = sessionStorage.length;
 
-            const product = <?php 
-                echo json_encode($parts); 
-            ?>;
-            let obj = product[id-1];
-            let values = Object.values(obj);
-            sessionStorage.setItem(`${id}`, values);
-            for (let [key,value] of Object.entries(sessionStorage)) {
-                console.log(key,value);
-            }
+    function addToCart(el) {
+        const id = el.id;
+
+        if (!sessionStorage.getItem(id)) {
+            let count = parseInt(cartCounter.innerHTML);
+            cartCounter.innerHTML = count + 1;
+        };
+
+        let amount = quantities[parseInt(id)-1];
+
+        const product = <?php echo json_encode($parts); ?>;
+
+        let obj = product[id-1];
+        let values = Object.values(obj);
+        values.push(amount);
+
+        sessionStorage.setItem(`${id}`, values);
+
+        for (let [key,value] of Object.entries(sessionStorage)) {
+            console.log(key,value);
         }
-        
-    </script>
-
-
-
-
-
-
-
-
+    }
+</script>
 
 <?php 
  #   echo<<<END

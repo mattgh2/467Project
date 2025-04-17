@@ -47,8 +47,7 @@ require_once("utils.php");
     </nav>
 
     <!-- Header Image w/ Catalog Button -->
-
-    <section class="relative flex h-[65vh] w-full items-center justify-center bg-cover bg-no-repeat" style="background-image: url(./cat.png)">
+    <section class="relative flex h-[65vh] w-full items-center justify-center bg-cover bg-no-repeat" style="background-image: url(./cat.png)"> 
       <div class="bg-black/50 p-6 text-center rounded-md shadow-xl">
         <h1 class="mb-4 text-4xl font-bold text-white">Lite Up Your Life Cuh</h1>
         <p class="mb-6 text-white">Check out our catalog for fresh parts and deals</p>
@@ -67,14 +66,18 @@ require_once("utils.php");
 
     <!-- Featured Items -->
 
-    <section class="bg-[#f9f9f9] py-16 px-6 h-[200%]">
+    <section class="bg-[#f9f9f9] py-16 px-6 h-[75%]">
     <h2 class="text-4xl font-bold text-center mb-10">Featured Items</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto justify-self-center justify-center">
     
     <!-- product cards here -->
     <?php
+      echo "<div class='w-[300%] h-[250%] flex gap-10'>";
       $part1 = query_first($pdoLegacy);
-      createProductCard($part1)
+      echo createProductCard($part1);
+      echo createProductCard($part1);
+      echo createProductCard($part1);
+      echo "</div>";
     ?>
    
     </div>

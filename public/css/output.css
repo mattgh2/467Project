@@ -318,6 +318,9 @@
   .mr-\[2\%\] {
     margin-right: 2%;
   }
+  .mr-\[10\%\] {
+    margin-right: 10%;
+  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
@@ -426,8 +429,14 @@
   .h-256 {
     height: calc(var(--spacing) * 256);
   }
+  .h-\[\%\] {
+    height: %;
+  }
   .h-\[7\%\] {
     height: 7%;
+  }
+  .h-\[8\%\] {
+    height: 8%;
   }
   .h-\[10\%\] {
     height: 10%;
@@ -450,11 +459,17 @@
   .h-\[50\%\] {
     height: 50%;
   }
+  .h-\[65\%\] {
+    height: 65%;
+  }
   .h-\[65vh\] {
     height: 65vh;
   }
   .h-\[70vh\] {
     height: 70vh;
+  }
+  .h-\[75\%\] {
+    height: 75%;
   }
   .h-\[75px\] {
     height: 75px;
@@ -483,8 +498,20 @@
   .h-\[200\%\] {
     height: 200%;
   }
+  .h-\[250\%\] {
+    height: 250%;
+  }
   .h-\[250vh\] {
     height: 250vh;
+  }
+  .h-\[300\%\] {
+    height: 300%;
+  }
+  .h-\[500\%\] {
+    height: 500%;
+  }
+  .h-\[20100\%\] {
+    height: 20100%;
   }
   .h-full {
     height: 100%;
@@ -573,8 +600,26 @@
   .w-\[90\%\] {
     width: 90%;
   }
+  .w-\[100\%\] {
+    width: 100%;
+  }
+  .w-\[200\%\] {
+    width: 200%;
+  }
+  .w-\[250\%\] {
+    width: 250%;
+  }
+  .w-\[300\%\] {
+    width: 300%;
+  }
   .w-\[350\%\] {
     width: 350%;
+  }
+  .w-\[400\%\] {
+    width: 400%;
+  }
+  .w-\[400\] {
+    width: 400;
   }
   .w-full {
     width: 100%;
@@ -684,6 +729,9 @@
   }
   .self-center {
     align-self: center;
+  }
+  .justify-self-center {
+    justify-self: center;
   }
   .overflow-hidden {
     overflow: hidden;
@@ -1172,6 +1220,11 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .transition-colors {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
   .transition-transform {
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -1184,6 +1237,14 @@
   .duration-100 {
     --tw-duration: 100ms;
     transition-duration: 100ms;
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
   }
   .duration-300 {
     --tw-duration: 300ms;
