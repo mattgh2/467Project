@@ -2,71 +2,11 @@
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
+    session_start();
 ?>
 <?php
 include "dbconnect.php";
-
-function  query_parts() : array {
-    global $pdoLegacy;
-    return $pdoLegacy->query("select * from parts")->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function query_first($pdo) : array {
-    $query = "SELECT * FROM parts LIMIT 1;";
-    $prepare = $pdo->prepare($query);
-    $success = $prepare->execute();
-    
-    return $prepare->fetchAll(PDO::FETCH_ASSOC)[0];
-}
-
-function createProductCard($part) : string {
-    return <<<EOT
-    <div class="bg-red-200 rounded-3xl shadow-2xl p-5">
-        <!-- Image -->
-        <div class="w-full h-[50%] shadow-sm bg-center bg-no-repeat bg-contain" style="background-image: url('$part[pictureURL]')"></div>
-
-        <!-- Description -->
-        <div class="w-full h-[10%] mt-[2%]">
-            <p class="text-center italic drop-shadow-md tracking-wide font-bold text-md"> $part[description] </p>
-        </div>
-
-        <!-- Price and weight -->
-        <div class="w-full h-[20%] mt-[2%] flex">
-            <!-- Price -->
-            <div class="w-[50%] h-full flex items-center justify-center">
-                <p class="text-center"> $$part[price] </p>
-            </div>
-            <!-- Weight -->
-            <div class="w-[50%] h-full flex items-center justify-center">
-                <p class="text-center"> $part[weight] lbs </p>
-            </div>
-        </div>
-
-        <!-- Add to cart button -->
-        <div class="w-full h-[20%] flex">
-            <!-- Quantity -->
-            <div class="w-[30%] h-2/3 flex items-center justify-around bg-red-300 rounded-md self-center">
-                <!-- Left box -- for plus -->
-                <div class="minus-qty pl-[10%] cursor-pointer">
-                    <i class="fa fa-minus" aria-hidden="true"></i>
-                </div>
-                <!-- Input box -->
-                <div>
-                    <input type="number"  placeholder="0" min="0" class=" qty-input w-full placeholder-black no-spin h-full bg-red-300 border-none outline-none text-center text-black">
-                </div>
-                <!-- Right box for minus -->
-                <div class="plus-qty cursor-pointer pr-[10%]">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                </div>
-            </div>
-            <!-- Add to cart button -->
-            <div class="w-[70%] h-full flex justify-center items-center">
-                <button class="rounded-md h-2/3 bg-red-600 shadow-lg px-10 text-white hover:bg-red-700 text-lg">Add To Cart</button>
-            </div>
-        </div>
-    </div>
-    EOT;
-}
+require_once('utils.php');
 ?>
 
 <html>
@@ -79,7 +19,7 @@ function createProductCard($part) : string {
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-pink-100">
+<body class="w-screen h-screen m-0 bg-red-300">
 <!-- Navbar -->
 <nav id="nav-bar">
     <div class="w-full bg-[#55baf2] h-[7%] flex shadow-xl justify-between">
@@ -91,7 +31,12 @@ function createProductCard($part) : string {
                 <li class=""> <a href="./catalog.php" class="text-white text-xl transform transition-transform duration-100 ease-in-out hover:text-shadow-lg/20"> Catalog </a> </li>
                 <li> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Warehouse </a> </li>
                 <li class=""> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Admin </a> </li>
-                <li class="text-2xl"> <a id='cart' class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </a> </li>
+                <div class=" flex flex-col w-10 relative">
+                    <div class="w-5 h-5 bg-indigo-900 absolute  flex rounded-full right-0"> 
+                    <p id="cart-counter" class="text-white self-center mx-auto">0</p>
+                    </div>
+                    <li class="text-2xl"> <a href="./checkout.php" id='cart' class="text-white text-3xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </a> </li>
+                </div>
             </ul>
         </div>
     </div>
@@ -105,8 +50,8 @@ function createProductCard($part) : string {
 ?>
 
 <script defer>
-    let incrementQty = document.querySelectorAll('[class*="plus-qty"]');
-    let decrementQty = document.querySelectorAll('[class*="minus-qty"]');
+    let incrementQty = document.querySelectorAll('.plus-qty');
+    let decrementQty = document.querySelectorAll('.minus-qty');
     let qty = document.querySelectorAll('[class*="qty-input"]');
 
     let n = qty.length;
@@ -124,6 +69,28 @@ function createProductCard($part) : string {
         });
     }
 </script>
+    <script>
+        function addToCart(el) {
+            const id = el.id;
+
+            if (!sessionStorage.getItem(id)) {
+                let cartCounter = document.getElementById('cart-counter');
+                let count = parseInt(cartCounter.innerHTML);
+                cartCounter.innerHTML = count + 1;
+            };
+
+            const product = <?php 
+                echo json_encode($parts); 
+            ?>;
+            let obj = product[id-1];
+            let values = Object.values(obj);
+            sessionStorage.setItem(`${id}`, values);
+            for (let [key,value] of Object.entries(sessionStorage)) {
+                console.log(key,value);
+            }
+        }
+        
+    </script>
 
 
 
