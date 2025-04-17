@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ?>
 <?php // Includes
 include "dbconnect.php";
-include "utils.php";
+require_once("utils.php");
 ?>
 
 <html>
@@ -72,7 +72,10 @@ include "utils.php";
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
     
     <!-- product cards here -->
-    <?= createProductCard($part1) ?>
+    <?php
+      $part1 = query_first($pdoLegacy);
+      createProductCard($part1)
+    ?>
    
     </div>
     </section>

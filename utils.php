@@ -11,6 +11,7 @@ function query_first($pdo) : array {
     
     return $prepare->fetchAll(PDO::FETCH_ASSOC)[0];
 }
+//$part1 = query_first($pdoLegacy);
 
 $count = 0;
 
