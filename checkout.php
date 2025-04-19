@@ -73,7 +73,7 @@ include "dbconnect.php";
               <p id="cart-counter" class="text-white self-center mx-auto text-xs">0</p>
             </div>
             <li class="text-2xl">
-              <a href="./checkout.php" id="cart" class="text-white text-3xl cursor-pointer transition-all duration-300 hover:text-white">
+              <a id="cart" class="text-white text-3xl cursor-pointer transition-all duration-300 hover:text-white">
                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
               </a>
             </li>
