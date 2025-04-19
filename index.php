@@ -24,27 +24,66 @@ require_once("utils.php");
   </head>
 
   <body class="m-0 p-0 min-h-screen w-screen overflow-x-hidden bg-[#ffffff]">
-    <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full" >
-      <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8] shadow-xl">
-        <div class="flex h-full w-[5%] items-center justify-center">
-          <a id="home-page" href="./" class="text-3xl text-white drop-shadow-lg"> <i class="fa fa-home" aria-hidden="true"></i> </a>
-        </div>
-        <div class="mr-[2%] flex h-full max-w-md">
-          <ul class="flex h-full items-center justify-center gap-10">
-            <li class=""><a href="./catalog.php" class="transform text-xl text-white ease-in-out hover:underline hover:text-shadow-lg/20 transition-all duration-300"> Catalog </a></li>
-            <li>
-              <a class="cursor-pointer text-xl text-white hover:text-shadow-lg/20 transition-all duration-300"> <i class="fa fa-lock" aria-hidden="true"></i> Warehouse </a>
-            </li>
-            <li class="">
-              <a class="cursor-pointer text-xl text-white hover:text-shadow-lg/20 transition-all duration-300"> <i class="fa fa-lock" aria-hidden="true"></i> Admin </a>
-            </li>
-            <li class="text-2xl">
-              <a id="cart" class="cursor-pointer text-xl text-white hover:text-shadow-lg/20 "> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </a>
-            </li>
-          </ul>
-        </div>
+
+  <!-- Navbar -->
+  <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
+    <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
+      <div class="flex h-full w-[5%] items-center justify-center">
+        <a id="home-page" href="./" class="text-3xl text-white">
+          <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
       </div>
-    </nav>
+      <div class="mr-[2%] flex h-full max-w-md">
+        <ul class="flex h-full items-center justify-center gap-10">
+          <li>
+            <a href="./catalog.php" class="group relative text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                Catalog
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                <i class="fa fa-lock" aria-hidden="true"></i> Warehouse
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                <i class="fa fa-lock" aria-hidden="true"></i> Admin
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <div class="relative flex flex-col w-10">
+            <div class="absolute right-0 w-5 h-5 bg-indigo-900 flex rounded-full">
+              <p id="cart-counter" class="text-white self-center mx-auto text-xs">0</p>
+            </div>
+            <li class="text-2xl">
+              <a href="./checkout.php" id="cart" class="text-white text-3xl cursor-pointer transition-all duration-300 hover:text-white">
+                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+              </a>
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
 
     <!-- Header Image w/ Catalog Button -->
     <section class="relative flex h-[65vh] w-full items-center justify-center bg-cover bg-no-repeat" style="background-image: url(./cat.png)"> 
@@ -58,27 +97,52 @@ require_once("utils.php");
     <!-- About Us -->
 
     <section class="bg-white py-16 px-6 text-center">
-    <h2 class="text-4xl font-bold mb-4">Why "Lite Up Ur Lyfe?"</h2>
+    <h2 class="text-4xl font-bold mb-4">Why Lite Up Ur Lyfe?</h2>
     <p class="max-w-3xl mx-auto text-gray-700 text-lg">
     We bring brightness to your ride with affordable, high-quality auto parts. Whether you’re fixing up your whip or adding flair, we gotchu covered with parts that shine.
     </p>
     </section>
 
     <!-- Featured Items -->
+    <section class="bg-[#d3ecfa] py-16 px-6">
+      <h2 class="text-4xl font-bold text-center mb-10">Featured Items</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto mb-25">
 
-    <section class="bg-[#f9f9f9] py-16 px-6 h-[75%]">
-    <h2 class="text-4xl font-bold text-center mb-10">Featured Items</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto justify-self-center justify-center">
-    
-    <!-- product cards here -->
-    <?php
-      echo "<div class='w-[300%] h-[250%] flex gap-10'>";
-      $part1 = query_first($pdoLegacy);
-      echo createProductCard($part1);
-      echo createProductCard($part1);
-      echo createProductCard($part1);
-      echo "</div>";
-    ?>
+        <?php
+          // New function to get 3 featured parts
+          function query_featured($pdo): array {
+              $query = "SELECT * FROM parts LIMIT 3;";
+              $prepare = $pdo->prepare($query);
+              $prepare->execute();
+              return $prepare->fetchAll(PDO::FETCH_ASSOC);
+          }
+
+          // Call the new function
+          $featuredParts = query_featured($pdoLegacy);
+
+          // Define individual part variables
+          $part1 = $featuredParts[0];
+          $part2 = $featuredParts[1];
+          $part3 = $featuredParts[2];
+
+          // Output the cards with increased height
+          echo "<div class='ml-4 min-h-[250px]'>"; 
+          echo createProductCard($part1);
+          echo "</div>";
+
+          echo "<div class='ml-4 min-h-[250px]'>";
+          echo createProductCard($part2);
+          echo "</div>";
+
+          echo "<div class='ml-4 min-h-[250px]'>";
+          echo createProductCard($part3);
+          echo "</div>";
+        ?>
+
+      </div>
+    </section>
+
+
    
     </div>
     </section>

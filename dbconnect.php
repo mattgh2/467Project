@@ -12,14 +12,14 @@
         echo "failed to connect to the database. " . $e->getMessage();
     }
 
-    $hostInventory = "blitz.cs.niu.edu";
-    $dbInventory = "csci467";
-    $usernameInventory = "student";
-    $passwordInventory = "student";
+    $hostInventory = "65.38.96.193";
+    $dbInventory = "InventoryOrders";
+    $usernameInventory = "tux";
+    $passwordInventory = "123";
 
     try {
         $dsnInventory = "mysql:host=$hostInventory;dbname=$dbInventory";
-        $pdoInventory = new pdo($dsnLegacy,$usernameInventory,$passwordInventory);
+        $pdoInventory = new pdo($dsnInventory,$usernameInventory,$passwordInventory);
     }
     catch (PDOException $e) {
         echo "failed to connect to the database. " . $e->getMessage();

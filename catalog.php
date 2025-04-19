@@ -5,12 +5,17 @@
     session_start();
 ?>
 <?php
-include "dbconnect.php";
+require_once("dbconnect.php");
 require_once('utils.php');
 ?>
 
 <html>
 <head>
+    <!-- Favicon links -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+
     <link rel="stylesheet" href="./public/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,37 +24,75 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-red-300">
-<!-- Navbar -->
-<nav id="nav-bar">
-    <div class="w-full bg-[#55baf2] h-[7%] flex shadow-xl justify-between">
-        <div class="w-[5%] h-full flex justify-center items-center">
-            <a id='home-page' href="./" class="text-3xl text-white drop-shadow-lg"> <i class="fa fa-home" aria-hidden="true"></i> </a>
-        </div>
-        <div class="max-w-md h-full flex mr-[2%]">
-            <ul class="flex h-full items-center justify-center gap-10">
-                <li class=""> <a href="./catalog.php" class="text-white  text-xl transform transition-transform duration-100 ease-in-out hover:text-shadow-lg/20"> Catalog </a> </li>
-                <li> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Warehouse </a> </li>
-                <li class=""> <a class="text-white text-xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-lock" aria-hidden="true"></i> Admin </a> </li>
-                <div class=" flex flex-col w-10 relative">
-                    <div class="w-5 h-5 bg-indigo-900 absolute  flex rounded-full right-0"> 
-                    <p id="cart-counter" class="text-white self-center mx-auto">0</p>
-                    </div>
-                    <li class="text-2xl"> <a href="./checkout.php" id='cart' class="text-white text-3xl cursor-pointer hover:text-shadow-lg/20"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </a> </li>
-                </div>
-            </ul>
-        </div>
+<body class="w-screen h-screen m-0 bg-gray-200">
+  <!-- Navbar -->
+  <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
+    <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
+      <div class="flex h-full w-[5%] items-center justify-center">
+        <a id="home-page" href="./" class="text-3xl text-white">
+          <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div class="mr-[2%] flex h-full max-w-md">
+        <ul class="flex h-full items-center justify-center gap-10">
+          <li>
+            <a href="./catalog.php" class="group relative text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                Catalog
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                <i class="fa fa-lock" aria-hidden="true"></i> Warehouse
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                <i class="fa fa-lock" aria-hidden="true"></i> Admin
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          <div class="relative flex flex-col w-10">
+            <div class="absolute right-0 w-5 h-5 bg-indigo-900 flex rounded-full">
+              <p id="cart-counter" class="text-white self-center mx-auto text-xs">0</p>
+            </div>
+            <li class="text-2xl">
+              <a id="cart" class="text-white text-3xl cursor-pointer transition-all duration-300 hover:text-white">
+                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+              </a>
+            </li>
+          </div>
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
+
 
 <?php
-    $parts = query_parts($pdoLegacy);
-    echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh]\">";
+    echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-48 \">";
         foreach ($parts as $part) echo createProductCard($part);
     echo "</div>";
 ?>
 
 <script defer>
+
+    let qtyBox = document.querySelectorAll('.qty-box');
     let incrementQty = document.querySelectorAll('.plus-qty');
     let decrementQty = document.querySelectorAll('.minus-qty');
     let qty = document.querySelectorAll('[class*="qty-input"]');
@@ -74,19 +117,30 @@ require_once('utils.php');
 
     function addToCart(el) {
         const id = el.id;
+        let amount = quantities[parseInt(id)-1];
+
+        if (amount == 0) {
+            let AmountBox = qtyBox[parseInt(id-1)];
+            AmountBox.classList.add("animate-bounce-once");
+            setTimeout(() => {
+                AmountBox.classList.remove("animate-bounce-once");
+            }, 1300);
+            return;
+        }
 
         if (!sessionStorage.getItem(id)) {
             let count = parseInt(cartCounter.innerHTML);
             cartCounter.innerHTML = count + 1;
         };
 
-        let amount = quantities[parseInt(id)-1];
-
         const product = <?php echo json_encode($parts); ?>;
-
+        const _qty = <?php echo json_encode($quantities) ?>;
+         
         let obj = product[id-1];
         let values = Object.values(obj);
+        let maxQty = _qty[id];
         values.push(amount);
+        values.push(maxQty);
 
         sessionStorage.setItem(`${id}`, values);
 
@@ -95,6 +149,7 @@ require_once('utils.php');
         }
     }
 </script>
+<script src="./cart.js"></script>
 
 <?php 
  #   echo<<<END
@@ -128,6 +183,7 @@ require_once('utils.php');
 
  #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
  #       </div>
+
 
  #       <div class="w-[50%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
  #       </div>    
