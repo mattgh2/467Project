@@ -360,6 +360,9 @@
   .mr-\[5\%\] {
     margin-right: 5%;
   }
+  .mr-\[10\%\] {
+    margin-right: 10%;
+  }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
@@ -413,6 +416,9 @@
   }
   .ml-\[5px\] {
     margin-left: 5px;
+  }
+  .ml-\[20\%\] {
+    margin-left: 20%;
   }
   .block {
     display: block;
@@ -1213,6 +1219,9 @@
   }
   .pb-\[65\%\] {
     padding-bottom: 65%;
+  }
+  .pl-8 {
+    padding-left: calc(var(--spacing) * 8);
   }
   .pl-\[10\%\] {
     padding-left: 10%;

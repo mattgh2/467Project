@@ -110,8 +110,9 @@ for (let [key, value] of Object.entries(sessionStorage)) {
     //price = topTotalPrice.innerText;
     topTotalPrice.innerText = "$" +  (_eachPrice * parseInt(quantity)).toFixed(2);
     topTotalWeight.innerText = parseFloat(quantity * weight).toFixed(2) + " lbs";
-      shippingCostPrice.innerText = '$' + calculateShipping(weightTotal).toFixed(2);
-      taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
+    shippingCostPrice.innerText = '$' + calculateShipping(weightTotal).toFixed(2);
+    taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
+    _estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substr(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
   });
 
   topQuantity.appendChild(topQuantityText);
@@ -125,7 +126,7 @@ for (let [key, value] of Object.entries(sessionStorage)) {
   topTotalText.innerText = "Total";
   topTotalText.className = "mr-[5%] mt-[10%] xl:text-lg text-sm";
 
-  let topTotalPrice = document.createElement("p");
+  var topTotalPrice = document.createElement("p");
   topTotalPrice.innerText = "$" + (price * quantity).toFixed(2);
   topTotalPrice.className = "mr-[5%]";
 
@@ -176,65 +177,65 @@ for (let [key, value] of Object.entries(sessionStorage)) {
 }
 
 let checkoutBox = document.createElement('div');
-checkoutBox.className = 'w-1/2 h-[50%] bg-pink-300 mx-auto ';
+checkoutBox.className = 'w-1/2 h-[50%] mx-auto';
 document.getElementById('checkout-container').appendChild(checkoutBox);
 
 let checkoutBoxPad = document.createElement("div");
 checkoutBoxPad.className = 'w-full h-[30%]';
 
 let shippingCostBox = document.createElement("div");
-shippingCostBox.className = 'w-full h-[10%] bg-purple-400 flex';
+shippingCostBox.className = 'w-full h-[10%] flex';
 
 let shippingCostText = document.createElement("div");
-shippingCostText.className = 'w-[90%] h-full bg-green-200';
+shippingCostText.className = 'w-[90%] h-full';
 shippingCostText.innerText = 'Shipping Cost';
 
 let shippingCostPrice = document.createElement("div");
-shippingCostPrice.className = 'w-[10%] h-full bg-blue-400'
+shippingCostPrice.className = 'w-[10%] h-full'
 shippingCostPrice.innerText = "$" + calculateShipping(weightTotal).toFixed(2);
 
 shippingCostBox.appendChild(shippingCostText);
 shippingCostBox.appendChild(shippingCostPrice);
 
 let discountBox = document.createElement("div");
-discountBox.className = 'w-full h-[10%] bg-red-300 flex';
+discountBox.className = 'w-full h-[10%] flex';
 
 let discountText = document.createElement("div");
-discountText.className = 'w-[90%] h-full bg-yellow-200';
+discountText.className = 'w-[90%] h-full';
 discountText.innerText = 'Discount';
 
 let discountPrice = document.createElement("div");
-discountPrice.className = 'w-[10%] h-full bg-orange-400'
+discountPrice.className = 'w-[10%] h-full'
 discountPrice.innerText = '$0.00';
 
 discountBox.appendChild(discountText);
 discountBox.appendChild(discountPrice);
 
 let taxBox = document.createElement("div");
-taxBox.className = 'w-full h-[10%] bg-red-200 flex';
+taxBox.className = 'w-full h-[10%] flex';
 
 let taxText = document.createElement("div");
-taxText.className = 'w-[90%] h-full bg-red-300';
+taxText.className = 'w-[90%] h-full';
 taxText.innerText = 'Tax';
 
 let taxPrice = document.createElement("div");
-taxPrice.className = 'w-[10%] h-full bg-yellow-200';
+taxPrice.className = 'w-[10%] h-full';
 taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
 
 taxBox.appendChild(taxText);
 taxBox.appendChild(taxPrice);
 
 let estimatedTotalBox = document.createElement("div");
-estimatedTotalBox.className = 'w-full h-[10%] bg-green-200 flex';
+estimatedTotalBox.className = 'w-full h-[10%] flex';
 
 let estimatedTotalText = document.createElement("div");
-estimatedTotalText.className = 'w-[90%] h-full bg-blue-300';
+estimatedTotalText.className = 'w-[90%] h-full';
 estimatedTotalText.innerText = 'Estimated Total Price';
 
 let _estimatedTotalPrice = document.createElement("div");
 _estimatedTotalPrice.id = 'estimated';
-_estimatedTotalPrice.className = 'w-[10%] h-full bg-red-400';
-_estimatedTotalPrice.innerText = (parseFloat(topTotalPrice.innerText) + parseFloat(shippingCostPrice.innerText) + parseFloat(taxPrice.innerText) - parseFloat(discount.innerText)).toFixed(2);
+_estimatedTotalPrice.className = 'w-[10%] h-full';
+_estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substr(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
 
 estimatedTotalBox.appendChild(estimatedTotalText);
 estimatedTotalBox.appendChild(_estimatedTotalPrice);
@@ -244,9 +245,13 @@ let checkoutButtonBox = document.createElement("div");
 let checkoutButton = document.createElement("button");
 checkoutButton.className = "bg-[linear-gradient(135deg,_#FFE93A,_#F1F78A)] h-12 xl:w-1/4 w-1/3 shadow-md text-black font-bold text-lg mb-4 self-end mx-auto cursor-pointer transition-all duration-300 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105"; 
 checkoutButton.innerText = "Checkout";
+
+checkoutButton.addEventListener("click", () => {
+    window.location.href = "payment.php";
+});
 checkoutButtonBox.appendChild(checkoutButton);
 
-checkoutButtonBox.className = 'w-full h-[30%] bg-blue-200 flex';
+checkoutButtonBox.className = 'w-full h-[30%] flex';
 
 checkoutBox.appendChild(checkoutBoxPad);
 checkoutBox.appendChild(shippingCostBox);
