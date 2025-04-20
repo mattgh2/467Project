@@ -90,7 +90,13 @@ require_once('utils.php');
     echo "</div>";
 ?>
 
-<script defer>
+<script type="module">
+    import { setCartCounter, updateCartCounter } from "./utils.js";
+
+    // let cartCounter = document.getElementById('cart-counter');
+    // let usersCart = JSON.parse(sessionStorage.getItem('usersCart') || '[]');
+    // cartCounter.innerHTML = usersCart.length;
+    setCartCounter();
 
     let qtyBox = document.querySelectorAll('.qty-box');
     let incrementQty = document.querySelectorAll('.plus-qty');
@@ -99,6 +105,7 @@ require_once('utils.php');
 
     let n = qty.length;
     let quantities = new Array(n).fill(0);
+
 
     for (let i = 0; i < n; ++i) {
         incrementQty[i].addEventListener('click', ()=> {
@@ -112,26 +119,82 @@ require_once('utils.php');
         });
     }
 
-    let cartCounter = document.getElementById('cart-counter');
-    cartCounter.innerHTML = sessionStorage.length;
+    function addBounceAnimationToElement(el) {
+        el.classList.add("animate-bounce-once");
+        setTimeout(() => {
+            el.classList.remove("animate-bounce-once");
+        }, 1300);
 
-    function addToCart(el) {
-        const id = el.id;
-        let amount = quantities[parseInt(id)-1];
+    }
+    function findCartItem(usersCart,id) {
+        for (let i = 0; i < usersCart.length; ++i) {
+            if (usersCart[i].id === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    function IsAlreadyInCart(usersCart, id) {
+        var index = findCartItem(usersCart,id);
+        return index >= 0 ? true : false;
+    }
+    function UpdateQuantity(usersCart,id,newQty) {
+        var index = findCartItem(usersCart,id);
 
-        if (amount == 0) {
-            let AmountBox = qtyBox[parseInt(id-1)];
-            AmountBox.classList.add("animate-bounce-once");
-            setTimeout(() => {
-                AmountBox.classList.remove("animate-bounce-once");
-            }, 1300);
+        if (index == -1) return;
+
+        usersCart[index].item[5] = newQty;
+        sessionStorage.setItem('usersCart', JSON.stringify(usersCart));
+
+    }
+
+    function isValidAmount(amount) {
+        return (amount > 0);
+    }
+
+
+    function pushToSessionStorage(id,item) {
+        // JS object: item id -> item array
+        let currentItem = { 
+            id : id,
+            item : item
+        };
+
+        // array of objects (like the one above).
+        var usersCart = [];
+
+        // Retrieve the users cart from sessionStorage if it exists.
+        // JSON.parse will convert the string at sessionStorage['usersCart'] to the original type before being converted to a string with JSON.stringify. (Since sessionStorage can only store strings).
+        // So JSON.parse is converting the string back to an array of objects.
+        if (sessionStorage.getItem('usersCart')) {
+            usersCart = JSON.parse(sessionStorage.getItem('usersCart'));
+        }
+
+        if (IsAlreadyInCart(usersCart,id)) {
+            UpdateQuantity(usersCart,id,item[5]);
             return;
         }
 
-        if (!sessionStorage.getItem(id)) {
-            let count = parseInt(cartCounter.innerHTML);
-            cartCounter.innerHTML = count + 1;
-        };
+        // Pushes the current item obj to the usersCart array.
+        usersCart.push(currentItem);
+
+        // Replaces the old stringifed array with the new one.
+        sessionStorage.setItem('usersCart', JSON.stringify(usersCart));
+
+        return true;
+
+    }
+
+    function addToCart(el) {
+        const id = el.id;
+
+        let amount = quantities[parseInt(id)-1];
+
+        if (!isValidAmount(amount)) {
+            let AmountBox = qtyBox[parseInt(id-1)];
+            addBounceAnimationToElement(AmountBox);
+            return;
+        }
 
         const product = <?php echo json_encode($parts); ?>;
         const _qty = <?php echo json_encode($quantities) ?>;
@@ -139,57 +202,22 @@ require_once('utils.php');
         let obj = product[id-1];
         let values = Object.values(obj);
         let maxQty = _qty[id];
+
         values.push(amount);
         values.push(maxQty);
 
-        sessionStorage.setItem(`${id}`, values);
+        let addedItem = pushToSessionStorage(id,values);
+        if (addedItem) updateCartCounter();
 
-        for (let [key,value] of Object.entries(sessionStorage)) {
-            console.log(key,value);
-        }
+        sessionStorage.setItem(`${id}`, values);
     }
+    
+    // Module script tags scopes the addToCart function to this script tag. 
+    // This makes it global scope. (for onclick in the html).
+    window.addToCart = addToCart;
 </script>
 <script src="./cart.js"></script>
+<script type="module" src="./utils.js"></script>
 
-<?php 
- #   echo<<<END
- #   <div class="w-full h-1/2 grid grid-cols-3">
- #   END;
-
- #   echo "<div class=\"w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl flex justify-center\">";
- #       echo "<div class=\"w-[90%] h-[40%]  mt-[5%]\">";
- #           $parts = query_parts();
- #           $parts_0_url = $parts[0]['pictureURL'];
- #           echo "<img src=\"$parts_0_url\" class='w-full h-full rounded-3xl'></a>";
- #       echo "</div>";
- #   echo "</div>";
-
-
- #   echo <<<END
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
- #       </div> 
-
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
- #       </div>
-
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
- #       </div>    
-
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
- #       </div>
- # 
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
- #       </div> 
-
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] rounded-3xl shadow-2xl">
- #       </div>
-
-
- #       <div class="w-[50%] h-full bg-green-300 ml-[1%] mr-[1%] rounded-3xl shadow-2xl">
- #       </div>    
-
- #   </div> 
- #   END;
-?>
 
 </body> </html>

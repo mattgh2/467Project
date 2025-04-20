@@ -4,10 +4,12 @@ let cart = document.getElementById("cart");
 function emptyBagMsg() {
   let emptyBag = document.createElement("h1");
   emptyBag.innerHTML = "Your Shopping Cart is empty.";
+  emptyBag.id = "empty-bag";
   emptyBag.className = "text-center text-gray-500 font-semibold tracking-wide uppercase p-6";
   return emptyBag;
 }
 cart.addEventListener("click", () => {
+    let usersCart = JSON.parse(sessionStorage.getItem('usersCart') || []);
   let cartPopUp = document.getElementById("cart-pop-up");
   if (cartPopUp) {
     cartPopUp.classList.replace("translate-x-0", "translate-x-full");
@@ -23,7 +25,7 @@ cart.addEventListener("click", () => {
       cartPopUp.classList.replace("translate-x-full", "translate-x-0");
     }, 100);
 
-    if (sessionStorage.length == 0) {
+    if (usersCart.length == 0) {
       cartPopUp.appendChild(emptyBagMsg());
     } else {
       let itemContainer = document.createElement("div");
@@ -44,33 +46,55 @@ cart.addEventListener("click", () => {
       checkoutContainer.appendChild(checkoutButtonPopUp);
       cartPopUp.appendChild(checkoutContainer);
 
-      for (let i = 0; i < sessionStorage.length; ++i) {
-        let id = sessionStorage.key(i); let part = sessionStorage[id].split(",");
+      for (var i = 0; i < usersCart.length; ++i) {
+        console.log(usersCart[i].id);
+      }
+      for (var i = 0; i < usersCart.length; ++i) {
+        let id = usersCart[i].id; let part = usersCart[i].item;
 
         let bagItemContainer = document.createElement("div");
         let bagItemImage = document.createElement("div");
         let bagItemInfo = document.createElement("div");
 
         let removeButton = document.createElement("button");
-        removeButton.className = "bg-red-600 w-8 h-8 absolute top-2 right-2 text-lg rounded-lg shadow-md text-white cursor-pointer";
+        removeButton.className = "bg-red-600 hover:bg-red-800 w-8 h-8 absolute top-2 right-2 text-lg rounded-lg shadow-md text-white cursor-pointer";
         removeButton.innerHTML = "<i class='fa fa-trash'aria-hidden='true'></i>";
 
         removeButton.onclick = () => {
-          let remove = removeButton.parentElement.parentElement;
-          remove.remove();
-          sessionStorage.removeItem(remove.id);
-          let cartCounter = document.getElementById("cart-counter");
-          let currentCount = cartCounter.innerHTML;
-          cartCounter.innerHTML = parseInt(currentCount) - 1;
-          if (parseInt(cartCounter.innerHTML) == 0) {
-            document.getElementById("checkout-button").remove();
-            checkoutContainer.appendChild(emptyBagMsg());
-          }
+            let remove = removeButton;
+            
+            while (remove && !remove.className.includes("bagItemContainer")) {
+                remove = remove.parentNode;
+            }
+
+            let currentCart = JSON.parse(sessionStorage.getItem('usersCart'));
+            currentCart = currentCart.filter(item => item.id !== remove.id);
+            sessionStorage.setItem('usersCart', JSON.stringify(currentCart));
+
+            remove.remove();
+            let itemInCheckout = document.querySelectorAll(".all");
+
+            for (var i = 0; i < itemInCheckout.length; ++i) {
+                if (itemInCheckout[i].id == remove.id) {
+                    itemInCheckout[i].remove();
+                    break;
+                }
+            }
+
+            let cartCounter = document.getElementById("cart-counter");
+            let currentCount = cartCounter.innerHTML;
+            cartCounter.innerHTML = parseInt(currentCount) - 1;
+
+            if (parseInt(cartCounter.innerHTML) == 0) {
+                document.getElementById("checkout-button").remove();
+                checkoutContainer.appendChild(emptyBagMsg());
+                document.getElementById("empty-bag").classList.replace("text-center","mx-auto");
+            }
         };
 
         bagItemInfo.appendChild(removeButton);
 
-        bagItemContainer.className = "shadow-md  h-32 w-full mb-6 flex gap-1 rounded-lg";
+        bagItemContainer.className = "bagItemContainer shadow-md  h-32 w-full mb-6 flex gap-1 rounded-lg";
         bagItemContainer.id = id;
         bagItemImage.className = "w-1/3 bg-white h-full bg-center bg-contain bg-no-repeat";
 
@@ -109,8 +133,6 @@ cart.addEventListener("click", () => {
         bagItemContainer.appendChild(bagItemInfo);
 
         itemContainer.appendChild(bagItemContainer);
-
-        console.log(part);
       }
     }
   }

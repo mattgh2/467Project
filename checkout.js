@@ -1,17 +1,24 @@
-import {calculateShipping} from "./utils.js";
+import {calculateShipping, setCartCounter} from "./utils.js";
 
-let cartCounter = document.getElementById("cart-counter");
-cartCounter.innerHTML = sessionStorage.length;
-
+setCartCounter();
 
 // Div for all cart items
 let cartItems = document.getElementById("cart-items");
 
 var weightTotal = 0;
-// For each part in cart
-for (let [key, value] of Object.entries(sessionStorage)) {
+
+// Changed how we are storing the users cart in sessionStorage.
+// its is now a stringified array of objects with id property and item property (item is the array of stuff).
+// its key in sessionStorage is "usersCart".
+
+let usersCart = JSON.parse(sessionStorage.getItem("usersCart"));
+if (usersCart == null) usersCart = [];
+
+// For each part in cart 
+for (let i = 0; i < usersCart.length; ++i) {
+  let key = usersCart[i].id;
+  let v = usersCart[i].item;
   // Get information about part
-  let v = value.split(",");
   let id = v[0];
   let desc = v[1];
   var price = v[2];
@@ -27,7 +34,7 @@ for (let [key, value] of Object.entries(sessionStorage)) {
   // Div for all information
   let all = document.createElement("div");
   all.id = key;
-  all.className = "all w-full h-[30%] border-l-0 border-r-0 border-t-2 border-b-2  bg-white shadow-2xl border-grey-50 flex flex-col wrap bg-white/80";
+  all.className = "all w-full h-[30%] border-l-0 border-r-0 border-t-2 border-b-2  bg-white shadow-lg border-gray-200 flex flex-col wrap bg-white/80";
   cartItems.appendChild(all);
 
   let blackBox = document.createElement("div");
@@ -53,11 +60,10 @@ for (let [key, value] of Object.entries(sessionStorage)) {
 
   // Description div and p tag
   let topDesc = document.createElement("div");
-  topDesc.className = "w-[30%] h-full ";
+  topDesc.className = "w-[30%] h-full";
   let topDescP = document.createElement("p");
   topDescP.innerText = desc;
-  topDescP.className =
-    "ml-[5%] mt-[2%] p-2 font-semibold xl:text-lg text-sm capitalize";
+  topDescP.className = "ml-2 mt-2 p-2 font-semibold text-gray-800 text-xs lg:text-md xl:text-lg capitalize tracking-wide";
   topDesc.appendChild(topDescP);
 
   // Price for one part
@@ -65,17 +71,17 @@ for (let [key, value] of Object.entries(sessionStorage)) {
   topEach.className = "w-[15%] h-full ";
 
   let topEachText = document.createElement("p");
-  topEachText.className = "xl:text-lg text-sm mt-[10%]";
+  topEachText.className = "text-xs lg:text-md xl:text-lg font-medium  mt-2 pt-2";
   topEachText.innerText = "Each";
 
   let topEachPrice = document.createElement("p");
-  topEachPrice.className = "xl:text-lg text-sm";
+  topEachPrice.className = "text-base lg:text-md xl:text-lg  text-sm font-bold text-green-600";
   let _eachPrice = parseFloat(price).toFixed(2);
   topEachPrice.innerText = "$" + _eachPrice;
 
   let topEachWeight = document.createElement("p");
-  topEachWeight.className = "xl:text-lg text-sm";
-  topEachWeight.innerText = parseFloat(weight).toFixed(2) + "lbs";
+  topEachWeight.className = "text-xs lg:text-sm text-gray-500";
+  topEachWeight.innerText = parseFloat(weight).toFixed(2) + " lbs";
 
   topEach.appendChild(topEachText);
   topEach.appendChild(topEachPrice);
@@ -83,14 +89,14 @@ for (let [key, value] of Object.entries(sessionStorage)) {
 
   // Quantity in cart
   let topQuantity = document.createElement("div");
-  topQuantity.className = "w-[10%] h-full xl:text-lg text-sm mt-[1.5%]";
+  topQuantity.className = "w-[10%] h-full xl:text-lg text-xs mt-2 pt-2";
 
   let topQuantityText = document.createElement("p");
-  topQuantityText.className = "xl:text-lg text-sm mt-[10%]";
+  topQuantityText.className = "xl:text-lg lg:text-md text-xs mt-[10%]";
   topQuantity.innerText = "Quantity";
 
   var topQuantitySelect = document.createElement("select");
-  topQuantitySelect.className = "border-2 px-4 border-opacity-50";
+  topQuantitySelect.className = "border border-gray-300 rounded-md text-sm lg:px-3 px-1 py-1 hover:border-black focus:outline-none";
   for (let i = 1; i <= max_qty; ++i) {
     var selectOpt = document.createElement("option");
     selectOpt.innerText = i;
@@ -101,10 +107,12 @@ for (let [key, value] of Object.entries(sessionStorage)) {
   }
   topQuantitySelect.addEventListener("change",()=>{
     weightTotal-=(weight*quantity);
+
     let newQuantity = topQuantitySelect.value;
     let newWeight = newQuantity * weight;
+
     weightTotal+=newWeight;
-      console.log(weightTotal);
+    console.log(weightTotal);
     quantity=newQuantity;
 
     //price = topTotalPrice.innerText;
@@ -112,7 +120,7 @@ for (let [key, value] of Object.entries(sessionStorage)) {
     topTotalWeight.innerText = parseFloat(quantity * weight).toFixed(2) + " lbs";
     shippingCostPrice.innerText = '$' + calculateShipping(weightTotal).toFixed(2);
     taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
-    _estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substr(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
+    _estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substring(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
   });
 
   topQuantity.appendChild(topQuantityText);
@@ -124,14 +132,14 @@ for (let [key, value] of Object.entries(sessionStorage)) {
 
   let topTotalText = document.createElement("p");
   topTotalText.innerText = "Total";
-  topTotalText.className = "mr-[5%] mt-[10%] xl:text-lg text-sm";
+  topTotalText.className = "mr-[5%] mt-2 pt-2 xl:text-lg text-xs lg:text-md";
 
   var topTotalPrice = document.createElement("p");
   topTotalPrice.innerText = "$" + (price * quantity).toFixed(2);
-  topTotalPrice.className = "mr-[5%]";
+    topTotalPrice.className = "mr-[5%] xl:text-lg text-xs";
 
   let topTotalWeight = document.createElement("p");
-  topTotalWeight.className = "xl:text-lg text-sm";
+  topTotalWeight.className = "xl:text-lg text-xs";
   topTotalWeight.innerText = parseFloat(weight * quantity).toFixed(2) + "lbs";
 
   topTotal.appendChild(topTotalText);
@@ -154,9 +162,7 @@ for (let [key, value] of Object.entries(sessionStorage)) {
   bottomRest.className = "w-[70%] h-full ";
 
   let bottomText = document.createElement("a");
-  bottomText.className =
-    "underline cursor-pointer hover:text-red-500 transition-colors px-2";
-  bottomText.href = "";
+  bottomText.className =  "text-red-500 hover:text-red-700 font-medium text-sm underline  ml-2 cursor-pointer" ;
   bottomText.innerText = "Remove";
 
   bottomText.addEventListener("click", () => {
@@ -166,7 +172,18 @@ for (let [key, value] of Object.entries(sessionStorage)) {
     }
     let id = current.id;
     current.remove();
-    sessionStorage.removeItem(id);
+
+    usersCart = JSON.parse(sessionStorage.getItem("usersCart")).filter(obj => obj.id !== id);
+    sessionStorage.setItem("usersCart", JSON.stringify(usersCart));
+
+    let cartCounter = document.getElementById("cart-counter");
+    let currentCount = cartCounter.innerHTML;
+    cartCounter.innerHTML = parseInt(currentCount) - 1;
+
+    if (parseInt(cartCounter.innerHTML) == 0) {
+        checkoutBox.remove();
+    }
+
   });
 
   bottomRest.appendChild(bottomText);
@@ -235,7 +252,7 @@ estimatedTotalText.innerText = 'Estimated Total Price';
 let _estimatedTotalPrice = document.createElement("div");
 _estimatedTotalPrice.id = 'estimated';
 _estimatedTotalPrice.className = 'w-[10%] h-full';
-_estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substr(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
+_estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substring(1)) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
 
 estimatedTotalBox.appendChild(estimatedTotalText);
 estimatedTotalBox.appendChild(_estimatedTotalPrice);
@@ -243,7 +260,8 @@ estimatedTotalBox.appendChild(_estimatedTotalPrice);
 let checkoutButtonBox = document.createElement("div");
 
 let checkoutButton = document.createElement("button");
-checkoutButton.className = "bg-[linear-gradient(135deg,_#FFE93A,_#F1F78A)] h-12 xl:w-1/4 w-1/3 shadow-md text-black font-bold text-lg mb-4 self-end mx-auto cursor-pointer transition-all duration-300 ease-in-out hover:brightness-110 hover:shadow-lg hover:scale-105"; 
+checkoutButton.className = "bg-gradient-to-r from-yellow-300 to-yellow-200 hover:from-yellow-400 hover:to-yellow-300 h-12 xl:w-1/4 w-1/3 shadow-md text-black font-bold text-lg mb-4 self-end mx-auto cursor-pointer shadow hover:shadow-xl transition-transform transform hover:scale-105"; 
+
 checkoutButton.innerText = "Checkout";
 
 checkoutButton.addEventListener("click", () => {
@@ -259,6 +277,3 @@ checkoutBox.appendChild(discountBox);
 checkoutBox.appendChild(taxBox);
 checkoutBox.appendChild(estimatedTotalBox);
 checkoutBox.appendChild(checkoutButtonBox);
-
-
-

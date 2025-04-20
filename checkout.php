@@ -83,7 +83,7 @@ include "dbconnect.php";
     </div>
   </nav>
 
-    <div class='w-full h-[10%] flex mt-[4%] mb-[2%] justify-center items-center bg-grey-200'>
+    <div class='w-full h-[10%] flex mt-[6%] mb-[2%] justify-center items-center bg-grey-200'>
         <p class='text-3xl'> <i class="fa fa-shopping-cart" aria-hidden="true"></i> </p>
         <h1 class='ml-[2%] text-2xl'> Shopping Cart </h1>
     </div>  
