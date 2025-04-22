@@ -96,4 +96,4 @@ include "dbconnect.php";
     <script type="module" src="./cart.js"></script>
     <script type="module" src="./checkout.js"></script>
 
-</body> </head>
+</body> </heade

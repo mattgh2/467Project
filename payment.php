@@ -39,11 +39,11 @@ require_once("utils.php");
       class="pt-[100px] pb-20 px-6 bg-[#f0f8ff] min-h-screen flex justify-center items-start"
     >
     <!-- Faded background image with gradient overlay -->
-    <div
-    class="absolute min-h-screen pt-[65%] pb-[65%] px-[50%] flex justify-center items-start overflow-x-hidden bg-[url('https://cdn.discordapp.com/attachments/1361911348401012816/1362920988282716323/cb4dd127a356da089419fcf622862a86.png?ex=68042695&is=6802d515&hm=5d9c1a0c63ffc42992fab2712806948f4bed27a6db5a32ff6bf3c7c4829b82b0&')] bg-cover bg-center opacity-55"
-    >
-    <div class="w-full h-full bg-gradient-to-b  from-white/80 via-white/80 to-white/80"></div>
-    </div>
+    <!--<div
+    class=" pointer-events-none absolute min-h-screen pt-[65%] pb-[65%] px-[50%] flex justify-center items-start overflow-x-hidden bg-[url('https://cdn.discordapp.com/attachments/1361911348401012816/1362920988282716323/cb4dd127a356da089419fcf622862a86.png?ex=68042695&is=6802d515&hm=5d9c1a0c63ffc42992fab2712806948f4bed27a6db5a32ff6bf3c7c4829b82b0&')] bg-cover bg-center opacity-55"
+    > -->
+    <!-- <div class="w-full h-full bg-gradient-to-b  from-white/80 via-white/80 to-white/80"></div>
+    </div> -->
         
       <div class="w-full max-w-2xl bg-white rounded-xl shadow-md p-8">
         <h2 class="text-3xl font-bold text-[#55baf2] mb-6 text-center">

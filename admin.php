@@ -1,0 +1,68 @@
+<?php // Error stuff
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+    session_start();
+?>
+<?php
+require_once("dbconnect.php");
+require_once('utils.php');
+?>
+
+<html>
+<head>
+    <!-- Favicon links -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+
+    <link rel="stylesheet" href="./public/css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <meta http-equiv="refresh" content="1"> -->
+    <title>Lite Up Ur Lyfe Auto Parts</title>
+</head>
+
+<body class="w-screen h-screen m-0 bg-radial-layered">
+
+  <!-- Navbar -->
+  <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
+
+    <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
+      <div class="flex h-full w-[5%] items-center justify-center">
+        <a id="home-page" href="./" class="text-3xl text-white">
+          <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="mr-[2%] flex h-full max-w-md">
+        <ul class="flex h-full items-center justify-center gap-10">
+          <li>
+            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+              <span class="pb-1 inline-block relative">
+                <i class="fa fa-lock" aria-hidden="true"></i> Warehouse
+                <!-- Left underline -->
+                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+                <!-- Right underline -->
+                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
+              </span>
+            </a>
+          </li>
+          </div>
+        </ul>
+      </div>
+  </nav>
+  
+    <div class="w-screen h-screen flex justify-center items-center gap-10"> 
+        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center">
+            <p class="text-2xl font-semibold">View Orders</p>
+        </div>
+        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center">
+        <a href="./weights.php" class="text-2xl font-semibold">Set Weight Brackets</a> 
+        </div>
+    </div>
+
+    <script type="module" src="warehouse.js"> </script>
+
+</body></head>

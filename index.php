@@ -203,8 +203,9 @@ require_once("utils.php");
     <script type="module" src="./utils.js"></script>
 
     <script type="module">
-      import {setCartCounter} from "./utils.js";
-      setCartCounter();
+      import  * as util from "./utils.js";
+      util.setCartCounter();
+      util.addQuantityListeners();
     </script>
 
   </body>

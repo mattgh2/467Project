@@ -6,7 +6,9 @@
   "version": "1.0.0",
   "main": "cart.js",
   "devDependencies": {
-    "tailwindcss": "^4.1.4"
+    "tailwindcss": "^4.1.4",
+    "tailwindcss-animate": "^1.0.7",
+    "tw-animate-css": "^1.2.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

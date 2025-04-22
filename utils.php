@@ -4,14 +4,6 @@ function  query_parts() : array {
     return $pdoLegacy->query("select * from parts")->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function query_first($pdo) : array {
-    $query = "SELECT * FROM parts LIMIT 1;";
-    $prepare = $pdo->prepare($query);
-    $success = $prepare->execute();
-    
-    return $prepare->fetchAll(PDO::FETCH_ASSOC)[0];
-}
-
 function query_quantities($pdo) : array {
 
     $query = "SELECT productID, quantity FROM Product;";
@@ -26,15 +18,17 @@ function query_quantities($pdo) : array {
     }    
     return $ret;
 }
-
-$count = 0;
+function queryItemQuantity($pdo,$id) : string {
+    $query = $pdo->prepare("select quantity from Product where productID = :id");
+    $prepared = $query->execute(['id' => $id]);
+    return $query->fetch()[0];
+}
 
 function createProductCard($part) : string {
-    global $count;
-    ++$count;
-
+    global $pdoInventory;
     $partDescription = ucwords($part["description"], "( ");
     $partID = $part['number'];
+    $maxQuantity = queryItemQuantity($pdoInventory, $partID);
 
     return <<<EOT
     <div class="bg-white rounded-3xl shadow-2xl p-5">
@@ -59,7 +53,7 @@ function createProductCard($part) : string {
         </div>
 
         <!-- Add to cart button -->
-        <div class="w-full h-[20%] flex gap-5">
+        <div class="add-to-cart w-full h-[20%] flex gap-5">
             <!-- Quantity -->
             <div class="qty-box w-[30%] h-2/3 flex items-center justify-around bg-gray-900 rounded-2xl self-center">
                 <!-- Left box -- for minus -->
@@ -68,7 +62,7 @@ function createProductCard($part) : string {
                 </div>
                 <!-- Input box -->
                 <div>
-                    <input type="number" placeholder="0" min="0" class="qty-input w-full placeholder-white no-spin h-full bg-gray-900 border-none outline-none text-center text-white text-xl">
+                    <input type="number" placeholder="0" value="0" min="0" class="qty-input w-full placeholder-white no-spin h-full bg-gray-900 border-none outline-none text-center text-white text-xl">
                 </div>
                 <!-- Right box for plus -->
                 <div class="plus-qty cursor-pointer pr-[10%] text-white">
@@ -77,7 +71,17 @@ function createProductCard($part) : string {
             </div>
             <!-- Add to cart button -->
             <div class="w-[70%] h-full flex justify-center items-center">
-                <button id='$partID' onclick="addToCart(this)" class="cursor-pointer rounded-2xl h-2/3 bg-gray-900 shadow-lg w-full drop-shadow-2xl tracking-wide text-white hover:bg-green-500 text-xl transition-colors duration-200 ease-in-out active:scale-95">Add To Cart</button>
+                <button 
+                    id='$partID' onclick="addToCart(this)" 
+                    class="cursor-pointer rounded-2xl h-2/3 bg-gray-900 shadow-lg w-full drop-shadow-2xl tracking-wide text-white hover:bg-green-500 text-xl transition-colors duration-200 ease-in-out active:scale-95"
+                    data-id='$partID'
+                    data-desc='$partDescription'
+                    data-img='$part[pictureURL]'
+                    data-price='$part[price]'
+                    data-weight='$part[weight]'
+                    data-max='$maxQuantity'
+                    >
+                    Add To Cart </button>
             </div>
         </div>
     </div>

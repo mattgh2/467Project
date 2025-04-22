@@ -6,18 +6,23 @@ setCartCounter();
 let cartItems = document.getElementById("cart-items");
 
 var weightTotal = 0;
+var priceTotal = 0;
 
 // Changed how we are storing the users cart in sessionStorage.
-// its is now a stringified array of objects with id property and item property (item is the array of stuff).
+// its  now a stringified array of objects with id property and item property (item is the array of stuff).
 // its key in sessionStorage is "usersCart".
 
 let usersCart = JSON.parse(sessionStorage.getItem("usersCart"));
 if (usersCart == null) usersCart = [];
 
+let itemMap = {};
+
 // For each part in cart 
 for (let i = 0; i < usersCart.length; ++i) {
   let key = usersCart[i].id;
   let v = usersCart[i].item;
+  itemMap[key] = v; 
+
   // Get information about part
   let id = v[0];
   let desc = v[1];
@@ -27,8 +32,9 @@ for (let i = 0; i < usersCart.length; ++i) {
   var quantity = v[5];
   let max_qty = v[6];
 
+  priceTotal+=price*quantity;
   weightTotal+=weight*quantity;
-  console.log(weightTotal);
+  // console.log(weightTotal);
   var shippingCost = calculateShipping(weightTotal);
 
   // Div for all information
@@ -89,7 +95,7 @@ for (let i = 0; i < usersCart.length; ++i) {
 
   // Quantity in cart
   let topQuantity = document.createElement("div");
-  topQuantity.className = "w-[10%] h-full xl:text-lg text-xs mt-2 pt-2";
+  topQuantity.className = "w-[10%] h-full xl:text-lg text-xs ml-3 mt-2 pt-2";
 
   let topQuantityText = document.createElement("p");
   topQuantityText.className = "xl:text-lg lg:text-md text-xs mt-[10%]";
@@ -105,22 +111,43 @@ for (let i = 0; i < usersCart.length; ++i) {
     }
     topQuantitySelect.appendChild(selectOpt);
   }
-  topQuantitySelect.addEventListener("change",()=>{
-    weightTotal-=(weight*quantity);
 
-    let newQuantity = topQuantitySelect.value;
-    let newWeight = newQuantity * weight;
+  topQuantitySelect.addEventListener("change", function() {
+    let current = this;
+
+    while (current && !current.className.includes("all"))  {
+      current = current.parentNode;
+    }
+    let currentItem = itemMap[current.id];
+    weightTotal -= (currentItem[3] * currentItem[5]);
+    priceTotal -= (currentItem[2] * currentItem[5]);
+
+    let newQuantity = this.value;
+    let newWeight = newQuantity * currentItem[3];
+    let newPrice = currentItem[2] * newQuantity;
 
     weightTotal+=newWeight;
-    console.log(weightTotal);
-    quantity=newQuantity;
+    currentItem[5] = newQuantity;
+    priceTotal+=newPrice;
 
-    //price = topTotalPrice.innerText;
-    topTotalPrice.innerText = "$" +  (_eachPrice * parseInt(quantity)).toFixed(2);
-    topTotalWeight.innerText = parseFloat(quantity * weight).toFixed(2) + " lbs";
+    for (let i = 0; i < usersCart.length; ++i) { 
+      if (usersCart[i].id == current.id) {
+        usersCart[i].item = currentItem;
+      }
+    }
+
+    let _topTotal  = current.querySelector('.top-total');
+    let _topTotalPrice = _topTotal.querySelector('.top-total-price');
+    let _topTotalWeight = _topTotal.querySelector('.top-total-weight');
+
+    sessionStorage.setItem("usersCart",JSON.stringify(usersCart));
+
+    _topTotalPrice.innerText = "$" +  (currentItem[2] * parseInt(currentItem[5])).toFixed(2);
+    _topTotalWeight.innerText = parseFloat(currentItem[5] * currentItem[3]).toFixed(2) + " lbs";
+
     shippingCostPrice.innerText = '$' + calculateShipping(weightTotal).toFixed(2);
-    taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
-    _estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substring(1)) + parseFloat(shippingCostPrice.innerText.substr(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
+    taxPrice.innerText = '$' + (0.05 * (parseFloat(currentItem[2])* parseInt(currentItem[5]))).toFixed(2);
+    _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substring(1)) - parseFloat(discountPrice.innerText.substring(1))).toFixed(2);
   });
 
   topQuantity.appendChild(topQuantityText);
@@ -128,19 +155,19 @@ for (let i = 0; i < usersCart.length; ++i) {
 
   // Total price
   let topTotal = document.createElement("div");
-  topTotal.className = "w-[15%] h-full flex flex-col items-end wrap";
+  topTotal.className = "top-total w-[15%] h-full flex flex-col wrap ml-[10%]";
 
   let topTotalText = document.createElement("p");
   topTotalText.innerText = "Total";
-  topTotalText.className = "mr-[5%] mt-2 pt-2 xl:text-lg text-xs lg:text-md";
+  topTotalText.className = "mr-5 mt-2 pt-2 xl:text-lg text-xs lg:text-md";
 
   var topTotalPrice = document.createElement("p");
   topTotalPrice.innerText = "$" + (price * quantity).toFixed(2);
-    topTotalPrice.className = "mr-[5%] xl:text-lg text-xs";
+    topTotalPrice.className = "top-total-price mr-[5%] xl:text-lg text-xs";
 
   let topTotalWeight = document.createElement("p");
-  topTotalWeight.className = "xl:text-lg text-xs";
-  topTotalWeight.innerText = parseFloat(weight * quantity).toFixed(2) + "lbs";
+  topTotalWeight.className = "top-total-weight xl:text-lg text-xs mr-2";
+  topTotalWeight.innerText = parseFloat(weight * quantity).toFixed(2) + " lbs";
 
   topTotal.appendChild(topTotalText);
   topTotal.appendChild(topTotalPrice);
@@ -166,7 +193,7 @@ for (let i = 0; i < usersCart.length; ++i) {
   bottomText.innerText = "Remove";
 
   bottomText.addEventListener("click", () => {
-    let current = bottomText;
+    var current = bottomText;
     while (current && !current.className.includes("all")) {
       current = current.parentNode;
     }
@@ -184,6 +211,9 @@ for (let i = 0; i < usersCart.length; ++i) {
         checkoutBox.remove();
     }
 
+    if (sessionStorage['usersCart'].length == 0) {
+        document.getElementById('checkout-container').remove();
+    }
   });
 
   bottomRest.appendChild(bottomText);
@@ -252,7 +282,7 @@ estimatedTotalText.innerText = 'Estimated Total Price';
 let _estimatedTotalPrice = document.createElement("div");
 _estimatedTotalPrice.id = 'estimated';
 _estimatedTotalPrice.className = 'w-[10%] h-full';
-_estimatedTotalPrice.innerText = '$' + (parseFloat(topTotalPrice.innerText.substring(1)) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
+_estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
 
 estimatedTotalBox.appendChild(estimatedTotalText);
 estimatedTotalBox.appendChild(_estimatedTotalPrice);
