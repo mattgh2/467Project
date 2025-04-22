@@ -24,7 +24,7 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-radial-layered">
+<body class="w-screen h-screen m-0 bg-radial-layered flex justify-center items-center"
 
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
@@ -54,4 +54,5 @@ require_once('utils.php');
       </div>
   </nav>
 
+  <script src="./weight.js"></script>
 </body></html>

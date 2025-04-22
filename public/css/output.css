@@ -364,6 +364,9 @@
   .inline-block {
     display: inline-block;
   }
+  .table {
+    display: table;
+  }
   .h-0\.5 {
     height: calc(var(--spacing) * 0.5);
   }
@@ -420,6 +423,9 @@
   }
   .h-\[150px\] {
     height: 150px;
+  }
+  .h-auto {
+    height: auto;
   }
   .h-full {
     height: 100%;
@@ -721,6 +727,9 @@
   .bg-green-100 {
     background-color: var(--color-green-100);
   }
+  .bg-green-300 {
+    background-color: var(--color-green-300);
+  }
   .bg-indigo-900 {
     background-color: var(--color-indigo-900);
   }
@@ -729,6 +738,9 @@
   }
   .bg-lime-500 {
     background-color: var(--color-lime-500);
+  }
+  .bg-red-300 {
+    background-color: var(--color-red-300);
   }
   .bg-red-600 {
     background-color: var(--color-red-600);

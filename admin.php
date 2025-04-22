@@ -59,10 +59,8 @@ require_once('utils.php');
             <p class="text-2xl font-semibold">View Orders</p>
         </div>
         <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center">
-        <a href="./weights.php" class="text-2xl font-semibold">Set Weight Brackets</a> 
+        <a href="./weights.php" class="text-2xl font-semibold text-center">View and Set Weight Brackets</a> 
         </div>
     </div>
-
-    <script type="module" src="warehouse.js"> </script>
 
 </body></head>
