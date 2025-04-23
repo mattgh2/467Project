@@ -1,8 +1,4 @@
 import {createSingleItem, initializeCart, removeCart, showCart} from "./cart.js";
-export var brackets = [
-    [ [0,5], 5],
-    [ [5, Infinity], 10 ]
-];
 
 export function updateBrackets(lb,price) {
     let idx = 0;
@@ -25,6 +21,8 @@ export function updateBrackets(lb,price) {
     let tmp = brackets[idx][0][1]
     brackets[idx][0][1] = lb;
     brackets.splice(idx, 0, [[lb, tmp],price]);
+
+    sessionStorage.setItem('weightBrackets', brackets);
 }
 
 // Base handling fee
@@ -36,7 +34,7 @@ export var r1 = 3;
 // Per-kg rate for "heavy" packages
 export var r2 = 2;
 
-export function calculateShipping(weight, base=c0, threshold=wt, light=r1, heavy=r2) {
+export function calculateShipping(brackets, weight) {
     for (let i=0; i<brackets.length; ++i) {
         if (weight >= brackets[i][0][0] && weight <= brackets[i][0][1]) {
             return brackets[i][1];
@@ -61,8 +59,8 @@ export function addNewItemEffectToElement(el) {
         setTimeout(() => el.classList.remove('new-item-effect'), 1000); 
 }
 export function addQuantityUpdatedEffect(el) {
-        el.classList.add('bg-lime-500');
-        setTimeout(() => el.classList.remove('bg-lime-500'), 1000); 
+        el.classList.add('quantity-updated');
+        setTimeout(() => el.classList.remove('quantity-updated'), 1000); 
 }
 
 export function showUsersCartPopUp(time = 1500, itemToAnimate = null, id = null) {

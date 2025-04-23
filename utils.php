@@ -5,7 +5,6 @@ function  query_parts() : array {
 }
 
 function query_quantities($pdo) : array {
-
     $query = "SELECT productID, quantity FROM Product;";
     $prepare = $pdo->prepare($query);
 
@@ -23,6 +22,9 @@ function queryItemQuantity($pdo,$id) : string {
     $prepared = $query->execute(['id' => $id]);
     return $query->fetch()[0];
 }
+function getAllWeightBrackets($pdo) {
+    return $pdo->query("select * from weightBrackets")->fetchALL(PDO::FETCH_ASSOC);
+}
 
 function createProductCard($part) : string {
     global $pdoInventory;
@@ -31,13 +33,13 @@ function createProductCard($part) : string {
     $maxQuantity = queryItemQuantity($pdoInventory, $partID);
 
     return <<<EOT
-    <div class="bg-white rounded-3xl shadow-2xl p-5">
+    <div class="product-card bg-white rounded-3xl shadow-2xl p-5">
         <!-- Image -->
         <div class="w-full h-[50%] bg-center bg-no-repeat bg-contain" style="background-image: url('$part[pictureURL]')"></div>
 
         <!-- Description -->
         <div class="w-full h-[10%] mt-[2%] flex">
-            <p class="self-center mx-auto mt-4 drop-shadow-md tracking-wide text-xl italic"> $partDescription </p>
+            <p class="desc self-center mx-auto mt-4 drop-shadow-md tracking-wide text-xl italic"> $partDescription </p>
         </div>
 
         <!-- Price and weight -->
@@ -92,4 +94,5 @@ function createProductCard($part) : string {
 <?php 
     $parts = query_parts($pdoLegacy);
     $quantities = query_quantities($pdoInventory);
+    $brackets = getAllWeightBrackets($pdoInventory);
 ?>

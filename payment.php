@@ -379,3 +379,12 @@ require_once("utils.php");
     </script>
   </body>
 </html>
+
+<!--
+      1. credit card auth
+      2. send email.
+      3. Put customer details in customers DB 
+      4. Clear js sessionStorage
+      5. Put order in orders DB 
+      6. Update quantity in Product DB
+->

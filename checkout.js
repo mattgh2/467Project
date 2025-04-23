@@ -4,6 +4,7 @@ setCartCounter();
 
 // Div for all cart items
 let cartItems = document.getElementById("cart-items");
+let _brackets = JSON.parse(sessionStorage.getItem("brackets"));
 
 var weightTotal = 0;
 var priceTotal = 0;
@@ -35,7 +36,7 @@ for (let i = 0; i < usersCart.length; ++i) {
   priceTotal+=price*quantity;
   weightTotal+=weight*quantity;
   // console.log(weightTotal);
-  var shippingCost = calculateShipping(weightTotal);
+  var shippingCost = calculateShipping(_brackets, weightTotal);
 
   // Div for all information
   let all = document.createElement("div");
@@ -145,7 +146,7 @@ for (let i = 0; i < usersCart.length; ++i) {
     _topTotalPrice.innerText = "$" +  (currentItem[2] * parseInt(currentItem[5])).toFixed(2);
     _topTotalWeight.innerText = parseFloat(currentItem[5] * currentItem[3]).toFixed(2) + " lbs";
 
-    shippingCostPrice.innerText = '$' + calculateShipping(weightTotal).toFixed(2);
+    shippingCostPrice.innerText = '$' + calculateShipping(_brackets, weightTotal).toFixed(2);
     taxPrice.innerText = '$' + (0.05 * (parseFloat(currentItem[2])* parseInt(currentItem[5]))).toFixed(2);
     _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substring(1)) - parseFloat(discountPrice.innerText.substring(1))).toFixed(2);
   });
@@ -239,7 +240,7 @@ shippingCostText.innerText = 'Shipping Cost';
 
 let shippingCostPrice = document.createElement("div");
 shippingCostPrice.className = 'w-[10%] h-full'
-shippingCostPrice.innerText = "$" + calculateShipping(weightTotal).toFixed(2);
+shippingCostPrice.innerText = "$" + calculateShipping(_brackets,weightTotal).toFixed(2);
 
 shippingCostBox.appendChild(shippingCostText);
 shippingCostBox.appendChild(shippingCostPrice);

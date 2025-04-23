@@ -24,7 +24,7 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-gray-200">
+<body class="w-screen h-screen m-0 bg-radial-layered">
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
     <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
@@ -82,23 +82,19 @@ require_once('utils.php');
       </div>
     </div>
   </nav>
-
+  <div class="w-1/2 h-12  mt-48 mx-auto flex justify-center">
+    <input id="search-bar" type="text" class="w-1/2 h-full border-slate-300 border self-center px-2 focus:outline-none" placeholder="Search an item...">
+    <div class="bg-gray-200 w-12 h-full flex justify-center items-center cursor-pointer border-t border-b border-r border-slate-300 hover:bg-gray-300"> <i class="fa fa-search" aria-hidden="true"></i></div>
+  </div>
 
 <?php
-    echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-48 \">";
+    echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-12 \">";
         foreach ($parts as $part) echo createProductCard($part);
     echo "</div>";
 ?>
 
-<script type="module">
-    import * as util from "./utils.js";
 
-    util.setCartCounter();
-    util.addQuantityListeners();
-    window.addToCart = util.addToCart;
-
-</script>
-
+<script type="module" src="./catalog.js"> </script>
 <script src="./cart.js"></script>
 <script type="module" src="./utils.js"></script>
 </body> </html>

@@ -5,6 +5,7 @@
 ?>
 <?php
 include "dbconnect.php";
+include "utils.php";
 ?>
 
 <html>
@@ -95,5 +96,19 @@ include "dbconnect.php";
 
     <script type="module" src="./cart.js"></script>
     <script type="module" src="./checkout.js"></script>
+    <script>
+        // array -> {LeftBound, RightBound, Price}
+        brackets = <?php echo json_encode($brackets)?>;
+        let weightBrackets = [];
 
-</body> </heade
+        for (let i = 0; i < brackets.length; ++i) {
+            let lb = brackets[i].LeftBound;
+            let rb = brackets[i].RightBound;
+            let price = brackets[i].Price;
+            weightBrackets.push([[lb,rb],price]);
+        }
+
+        sessionStorage.setItem("brackets", JSON.stringify(weightBrackets));
+    </script>
+
+</body> </head>

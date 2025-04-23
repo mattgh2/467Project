@@ -24,7 +24,7 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-radial-layered flex justify-center items-center"
+<body class="w-screen h-screen m-0 bg-radial-layered ">
 
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
@@ -54,5 +54,22 @@ require_once('utils.php');
       </div>
   </nav>
 
-  <script src="./weight.js"></script>
+  <?php
+    echo "<div class='all-container flex flex-wrap flex-shrink flex-grow justify-center bg-green-200 mt-[5%] w-full h-full'>";
+      echo "<div class='form-container w-[50%] h-[25%]  bg-purple-300'>";
+        echo "<form action='' method='POST' class='mt-[2%] gap-5 flex justify-center'>";
+          echo "<input min=0 type='number' name='leftBound' placeholder='Enter Lower Bound' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
+          echo "<input min=0 type='number' name='price' placeholder='Enter Price' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
+          echo "<input type='submit' value='Add bracket' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
+        echo "</form>";
+      echo "</div>";
+    echo "</div>";
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+      if (isset($_POST["leftBound"]) && isset($_POST["price"])) {
+        changeBrackets($_POST["leftBound"], $_POST["price"]);
+      }
+    }
+  ?>
+
 </body></html>
