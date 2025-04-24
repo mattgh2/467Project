@@ -1,75 +1,100 @@
-<?php // Error stuff
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-    session_start();
-?>
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+session_start();
 require_once("dbconnect.php");
 require_once('utils.php');
 ?>
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <!-- Favicon links -->
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
-    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
-
-    <link rel="stylesheet" href="./public/css/output.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <meta http-equiv="refresh" content="1"> -->
-    <title>Lite Up Ur Lyfe Auto Parts</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lite Up Ur Lyfe Auto Parts</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./public/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body class="w-screen h-screen m-0 bg-radial-layered ">
+<body class="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-100 min-h-screen font-sans">
 
   <!-- Navbar -->
-  <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
-
-    <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
-      <div class="flex h-full w-[5%] items-center justify-center">
-        <a id="home-page" href="./" class="text-3xl text-white">
-          <i class="fa fa-home" aria-hidden="true"></i>
-        </a>
-      </div>
-
-      <div class="mr-[2%] flex h-full max-w-md">
-        <ul class="flex h-full items-center justify-center gap-10">
-          <li>
-            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
-              <span class="pb-1 inline-block relative">
-                <i class="fa fa-lock" aria-hidden="true"></i> Warehouse
-                <!-- Left underline -->
-                <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
-                <!-- Right underline -->
-                <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
-              </span>
-            </a>
-          </li>
-          </div>
-        </ul>
-      </div>
+  <nav class="fixed top-0 left-0 z-50 w-full shadow-md">
+    <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
+      <a href="./" class="text-white text-2xl">
+        <i class="fa fa-home"></i>
+      </a>
+      <ul class="flex gap-6 text-white text-lg">
+        <li class="group relative">
+          <a class="cursor-pointer">
+            <i class="fa fa-lock"></i> Warehouse
+            <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </nav>
 
-  <?php
-    echo "<div class='all-container flex flex-wrap flex-shrink flex-grow justify-center bg-green-200 mt-[5%] w-full h-full'>";
-      echo "<div class='form-container w-[50%] h-[25%]  bg-purple-300'>";
-        echo "<form action='' method='POST' class='mt-[2%] gap-5 flex justify-center'>";
-          echo "<input min=0 type='number' name='leftBound' placeholder='Enter Lower Bound' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
-          echo "<input min=0 type='number' name='price' placeholder='Enter Price' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
-          echo "<input type='submit' value='Add bracket' class='w-[30%] h-[10%] bg-white border-0 outline-0 text-center rounded-2xl hover:bg-blue-100 p-2'>";
-        echo "</form>";
-      echo "</div>";
-    echo "</div>";
+  <!-- Page Content -->
+  <div class="pt-24 px-4 flex flex-col items-center gap-10">
 
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-      if (isset($_POST["leftBound"]) && isset($_POST["price"])) {
-        changeBrackets($_POST["leftBound"], $_POST["price"]);
-      }
-    }
-  ?>
+    <!-- Add Bracket Form -->
+    <form action="./weights.php" method="POST" class="flex flex-col md:flex-row gap-4 w-full max-w-3xl bg-white p-6 rounded-xl shadow-lg">
+      <input required type="number" name="leftBound" placeholder="Lower Bound"
+        class="flex-1 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" min="0">
+      <input required type="number" name="price" placeholder="Price"
+        class="flex-1 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" min="0">
+      <input type="submit" value="Add Bracket"
+        class="bg-blue-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-600 transition-colors cursor-pointer">
+    </form>
 
-</body></html>
+    <!-- Brackets Table -->
+    <div class="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden">
+      <table class="w-full table-auto">
+        <thead class="bg-blue-100 text-left text-blue-800">
+          <tr>
+            <th class="px-6 py-4">Left Bound</th>
+            <th class="px-12 py-4 whitespace-nowrap">Right Bound</th>
+            <th class="px-6 py-4">Price</th>
+            <th class="px-6 py-4 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700">
+          <?php
+          if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if (isset($_POST["leftBound"], $_POST["price"])) {
+              changeBrackets($pdoInventory, $_POST["leftBound"], $_POST["price"]);
+            }
+            if (isset($_POST['delete'])) {
+              $leftBound = $_POST['LeftBound'];
+              $rightBound = $_POST['RightBound'];
+              delete_from_DB($pdoInventory, $leftBound, $rightBound);
+              check_no_brackets($pdoInventory);
+            }
+          }
+
+          $_brackets = createBracketsArray($pdoInventory);
+          foreach ($_brackets as $bracket) {
+            echo "<tr class='border-t'>";
+            echo "<td class='px-6 py-4'>{$bracket[0]}</td>";
+            echo "<td class='px-6 py-4'>{$bracket[1]}</td>";
+            echo "<td class='px-6 py-4'>$" . $bracket[2] . "</td>";
+            echo "<td class='px-6 py-4 text-center'>";
+            echo "<form action='' method='POST' class='inline'>";
+            echo "<input type='hidden' name='LeftBound' value='{$bracket[0]}'>";
+            echo "<input type='hidden' name='RightBound' value='{$bracket[1]}'>";
+            echo "<button type='submit' name='delete' class='text-red-600 hover:underline'>Remove</button>";
+            echo "</form>";
+            echo "</td>";
+            echo "</tr>";
+          }
+          ?>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -23,7 +23,84 @@ function queryItemQuantity($pdo,$id) : string {
     return $query->fetch()[0];
 }
 function getAllWeightBrackets($pdo) {
-    return $pdo->query("select * from weightBrackets")->fetchALL(PDO::FETCH_ASSOC);
+    return $pdo->query("select * from weightBrackets")->fetchALL(PDO::FETCH_ASSOC); 
+}
+function createBracketsArray($pdo) : array {
+    $brackets = getAllWeightBrackets($pdo);
+    $arr = array();
+    // [LeftBound Rightbound Price]
+    foreach($brackets as $bracket) {
+        $arr[] = [$bracket["LeftBound"], $bracket["RightBound"], $bracket["Price"]];
+    }
+    return $arr;
+}
+
+function delete_from_DB($pdo, $lb, $rb) {
+    $pdo->exec("DELETE FROM weightBrackets WHERE LeftBound=$lb AND RightBound=$rb");
+}
+
+function check_no_brackets($pdo) {
+    $q = $pdo->query("SELECT * FROM weightBrackets")->fetchALL(PDO::FETCH_ASSOC);
+
+    if (!sizeof($q)) {
+        $pdo->exec("INSERT INTO weightBrackets (LeftBound, RightBound, Price) VALUES (0, 100000, 5)");
+    }
+}
+
+
+function changeBrackets($pdo, $lb, $price) {
+    $brackets = createBracketsArray($pdo);
+    $idx = 0;
+    $max = $brackets[0][0];
+    $found = false;
+
+    $i = 0;
+    foreach($brackets as $bracket) {
+        if ($bracket[0] == $lb) {
+            $found = true;
+        } else if ($bracket[0] < $lb) {
+            $idx = $i;
+            $max = $bracket[0];
+        }
+        $i++;
+    }
+
+    if ($found) {
+        return;
+    }
+
+    $left = $brackets[$idx][0];
+    $right = $brackets[$idx][1];
+
+    $update = "update weightBrackets set RightBound = $lb where LeftBound = $left and RightBound = $right";
+    $insert = "INSERT INTO weightBrackets (LeftBound, RightBound, Price) VALUES ($lb, $right, $price)";
+    $pdo->exec($update);
+    $pdo->exec($insert);
+}
+
+function insert_customer_data($pdo, $name, $email, $address) : string {
+    $query = "INSERT INTO Customer VALUES (:name, :email, :address);";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":name" => $name, ":email" => $email, ":address" => $address));
+
+
+    $prepared = $pdo->prepare("select customerID from Customer where name = :name and email = :email");
+    $success = $pdo->execute(['name' => $name, 'email' => $email]);
+    return $prepared->fetchALL(PDO::FETCH_ASSOC)['customerID'];
+}
+
+function insert_order($pdo, $customer_id, $status="Not Completed") {
+    $query = "INSERT INTO Orders (customerID, orderStatus) VALUES (:id, :status);";
+
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":id" => $customer_id, ":status" => $status));
+    return $prepare->fetchAll(PDO::FETCH_ASSOC)['orderID'];
+}
+
+function insert_order_product($pdo, $order_number, $product_id, $qty) {
+    $query = "INSERT INTO OrderProduct (orderID, productID, qty) VALUES (:order_number, :product_id, :qty);";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":order_number" => $order_number, ":product_id" => $product_id, ":qty" => $qty));
 }
 
 function createProductCard($part) : string {
@@ -57,14 +134,14 @@ function createProductCard($part) : string {
         <!-- Add to cart button -->
         <div class="add-to-cart w-full h-[20%] flex gap-5">
             <!-- Quantity -->
-            <div class="qty-box w-[30%] h-2/3 flex items-center justify-around bg-gray-900 rounded-2xl self-center">
+            <div class="qty-box w-[30%] h-2/3 flex items-center justify-around bg-[#55baf2] rounded-2xl self-center">
                 <!-- Left box -- for minus -->
                 <div class="minus-qty pl-[10%] cursor-pointer text-white">
                     <i class="fa fa-minus" aria-hidden="true"></i>
                 </div>
                 <!-- Input box -->
                 <div>
-                    <input type="number" placeholder="0" value="0" min="0" class="qty-input w-full placeholder-white no-spin h-full bg-gray-900 border-none outline-none text-center text-white text-xl">
+                    <input type="number" placeholder="0" value="0" min="0" class="qty-input w-full placeholder-white no-spin h-full bg-[#55baf2] border-none outline-none text-center text-white text-xl">
                 </div>
                 <!-- Right box for plus -->
                 <div class="plus-qty cursor-pointer pr-[10%] text-white">
@@ -75,7 +152,7 @@ function createProductCard($part) : string {
             <div class="w-[70%] h-full flex justify-center items-center">
                 <button 
                     id='$partID' onclick="addToCart(this)" 
-                    class="cursor-pointer rounded-2xl h-2/3 bg-gray-900 shadow-lg w-full drop-shadow-2xl tracking-wide text-white hover:bg-green-500 text-xl transition-colors duration-200 ease-in-out active:scale-95"
+                    class="cursor-pointer rounded-2xl h-2/3 bg-[#55baf2] shadow-lg w-full drop-shadow-2xl tracking-wide text-white hover:bg-green-500 text-xl transition-colors duration-200 ease-in-out active:scale-95"
                     data-id='$partID'
                     data-desc='$partDescription'
                     data-img='$part[pictureURL]'
@@ -88,11 +165,14 @@ function createProductCard($part) : string {
         </div>
     </div>
     EOT;
-}
+    }
+
+
 ?>
 
 <?php 
     $parts = query_parts($pdoLegacy);
     $quantities = query_quantities($pdoInventory);
     $brackets = getAllWeightBrackets($pdoInventory);
+    // changeBrackets($pdoInventory);
 ?>

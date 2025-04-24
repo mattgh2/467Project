@@ -82,10 +82,15 @@ require_once('utils.php');
       </div>
     </div>
   </nav>
-  <div class="w-1/2 h-12  mt-48 mx-auto flex justify-center">
-    <input id="search-bar" type="text" class="w-1/2 h-full border-slate-300 border self-center px-2 focus:outline-none" placeholder="Search an item...">
-    <div class="bg-gray-200 w-12 h-full flex justify-center items-center cursor-pointer border-t border-b border-r border-slate-300 hover:bg-gray-300"> <i class="fa fa-search" aria-hidden="true"></i></div>
-  </div>
+  <div class="w-2/3 max-w-2xl h-12 mt-48 mx-auto flex justify-center">
+  <input id="search-bar" type="text" 
+    class="w-full h-full px-4 text-black bg-[#e9f1f5] placeholder-#a0a2a3 focus:outline-2px rounded-l-full" 
+    placeholder="Search an item...">
+  <button id="search-button"
+    class="w-12 h-full flex justify-center items-center text-white bg-gradient-to-r from-[#55baf2] to-[#9dd8f8] rounded-r-full hover:opacity-80">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </button>
+</div>
 
 <?php
     echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-12 \">";

@@ -24,7 +24,7 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-radial-layered">
+<body class="w-screen h-screen m-0 bg-gradient-to-br from-[#1d1d1d] via-[#2e2e2e] to-[#3f3f3f]">
 
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
@@ -55,10 +55,10 @@ require_once('utils.php');
   </nav>
   
     <div class="w-screen h-screen flex justify-center items-center gap-10"> 
-        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center">
-            <p class="text-2xl font-semibold">View Orders</p>
+        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
+            <a href="./orders.php" class="text-2xl font-semibold text-center">View Orders</a>     
         </div>
-        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center">
+        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
         <a href="./weights.php" class="text-2xl font-semibold text-center">View and Set Weight Brackets</a> 
         </div>
     </div>

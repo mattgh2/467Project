@@ -4,7 +4,7 @@ export function updateBrackets(lb,price) {
     let idx = 0;
     let max = brackets[0][0][0];
     let found = false;
-    for (let i=0; i<brackets.length && !found; ++i) {
+    for (let i=0; i < brackets.length && !found; ++i) {
         let interval = brackets[i][0];
         if (interval[0] == lb) {
             found = true;
@@ -40,6 +40,7 @@ export function calculateShipping(brackets, weight) {
             return brackets[i][1];
         }
     }
+    return 5;
 }
 
 export function setCartCounter() {

@@ -15,8 +15,6 @@ include "utils.php";
     <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
 
-
-    
     <link rel="stylesheet" href="./public/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -90,15 +88,13 @@ include "utils.php";
     </div>  
     <div id="checkout-container" class='w-full h-full flex gap-10'>
       <div id="cart-items" class='h-full w-1/2 flex flex-col gap-10 ml-[2%]'>
-
       </div>
     </div>  
 
     <script type="module" src="./cart.js"></script>
     <script type="module" src="./checkout.js"></script>
     <script>
-        // array -> {LeftBound, RightBound, Price}
-        brackets = <?php echo json_encode($brackets)?>;
+        brackets = <?php echo json_encode(getAllWeightBrackets($pdoInventory))?>;
         let weightBrackets = [];
 
         for (let i = 0; i < brackets.length; ++i) {
@@ -107,8 +103,9 @@ include "utils.php";
             let price = brackets[i].Price;
             weightBrackets.push([[lb,rb],price]);
         }
-
+        // console.log(weightBrackets);
         sessionStorage.setItem("brackets", JSON.stringify(weightBrackets));
     </script>
 
-</body> </head>
+
+</body></html>

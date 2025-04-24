@@ -1,6 +1,31 @@
 import {calculateShipping, setCartCounter} from "./utils.js";
 
 setCartCounter();
+function EmptyCartDisplay() {
+
+    let checkoutContainer = document.getElementById('checkout-container');
+
+    let container = document.createElement('div');
+    container.className = "flex w-full flex-col gap-12";
+    checkoutContainer.appendChild(container);
+
+    let cartSVG = document.createElement('img');
+    cartSVG.src = "./assets/cart.svg";
+    cartSVG.className = "w-1/4 h-1/4 mt-10 self-center";
+    container.appendChild(cartSVG);
+
+    let emptyCartMessage = document.createElement('p');
+    emptyCartMessage.innerText = "Your Cart is Currently Empty!";
+    emptyCartMessage.className = "text-4xl md:text-5xl font-semibold text-gray-700 tracking-wide text-center leading-snug ml-10";
+    container.appendChild(emptyCartMessage); 
+    let returnToCatalogButton = document.createElement('button');
+
+    returnToCatalogButton.className = "px-8 h-20 bg-blue-500 text-white font-bold text-lg tracking-tight shadow-md rounded-2xl self-center cursor-pointer ml-14 mt-5 transition-colors transform ease-in-out duration-300 hover:bg-blue-700";
+    returnToCatalogButton.innerText = "Return To Catalog";
+    returnToCatalogButton.addEventListener('click', ()=>{ window.location.href = "./catalog.php"; });
+    container.appendChild(returnToCatalogButton);
+
+}
 
 // Div for all cart items
 let cartItems = document.getElementById("cart-items");
@@ -145,7 +170,6 @@ for (let i = 0; i < usersCart.length; ++i) {
 
     _topTotalPrice.innerText = "$" +  (currentItem[2] * parseInt(currentItem[5])).toFixed(2);
     _topTotalWeight.innerText = parseFloat(currentItem[5] * currentItem[3]).toFixed(2) + " lbs";
-
     shippingCostPrice.innerText = '$' + calculateShipping(_brackets, weightTotal).toFixed(2);
     taxPrice.innerText = '$' + (0.05 * (parseFloat(currentItem[2])* parseInt(currentItem[5]))).toFixed(2);
     _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substring(1)) - parseFloat(discountPrice.innerText.substring(1))).toFixed(2);
@@ -208,12 +232,10 @@ for (let i = 0; i < usersCart.length; ++i) {
     let currentCount = cartCounter.innerHTML;
     cartCounter.innerHTML = parseInt(currentCount) - 1;
 
-    if (parseInt(cartCounter.innerHTML) == 0) {
-        checkoutBox.remove();
-    }
-
-    if (sessionStorage['usersCart'].length == 0) {
-        document.getElementById('checkout-container').remove();
+    if (JSON.parse(sessionStorage.getItem('usersCart')).length == 0) {
+    document.getElementById('cart-items').remove();
+    document.getElementById('checkout-box').remove();
+    EmptyCartDisplay();
     }
   });
 
@@ -223,64 +245,71 @@ for (let i = 0; i < usersCart.length; ++i) {
   bottomAll.appendChild(bottomPad);
   bottomAll.appendChild(bottomRest);
 }
+ 
+if (document.getElementById('cart-items').childNodes.length == 1) {
+    document.getElementById('cart-items').remove();
+    EmptyCartDisplay();
+}
 
-let checkoutBox = document.createElement('div');
+else {
+var checkoutBox = document.createElement('div');
 checkoutBox.className = 'w-1/2 h-[50%] mx-auto';
+checkoutBox.id = "checkout-box";
 document.getElementById('checkout-container').appendChild(checkoutBox);
 
-let checkoutBoxPad = document.createElement("div");
+var checkoutBoxPad = document.createElement("div");
 checkoutBoxPad.className = 'w-full h-[30%]';
 
-let shippingCostBox = document.createElement("div");
+var shippingCostBox = document.createElement("div");
 shippingCostBox.className = 'w-full h-[10%] flex';
 
-let shippingCostText = document.createElement("div");
+var shippingCostText = document.createElement("div");
 shippingCostText.className = 'w-[90%] h-full';
 shippingCostText.innerText = 'Shipping Cost';
 
-let shippingCostPrice = document.createElement("div");
+var shippingCostPrice = document.createElement("div");
 shippingCostPrice.className = 'w-[10%] h-full'
 shippingCostPrice.innerText = "$" + calculateShipping(_brackets,weightTotal).toFixed(2);
 
 shippingCostBox.appendChild(shippingCostText);
 shippingCostBox.appendChild(shippingCostPrice);
 
-let discountBox = document.createElement("div");
+var discountBox = document.createElement("div");
 discountBox.className = 'w-full h-[10%] flex';
 
-let discountText = document.createElement("div");
+var discountText = document.createElement("div");
 discountText.className = 'w-[90%] h-full';
 discountText.innerText = 'Discount';
 
-let discountPrice = document.createElement("div");
+var discountPrice = document.createElement("div");
 discountPrice.className = 'w-[10%] h-full'
 discountPrice.innerText = '$0.00';
 
 discountBox.appendChild(discountText);
 discountBox.appendChild(discountPrice);
 
-let taxBox = document.createElement("div");
+var taxBox = document.createElement("div");
 taxBox.className = 'w-full h-[10%] flex';
 
-let taxText = document.createElement("div");
+var taxText = document.createElement("div");
 taxText.className = 'w-[90%] h-full';
 taxText.innerText = 'Tax';
 
-let taxPrice = document.createElement("div");
+var taxPrice = document.createElement("div");
 taxPrice.className = 'w-[10%] h-full';
 taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
 
 taxBox.appendChild(taxText);
 taxBox.appendChild(taxPrice);
 
-let estimatedTotalBox = document.createElement("div");
+var estimatedTotalBox = document.createElement("div");
 estimatedTotalBox.className = 'w-full h-[10%] flex';
 
-let estimatedTotalText = document.createElement("div");
+var estimatedTotalText = document.createElement("div");
 estimatedTotalText.className = 'w-[90%] h-full';
 estimatedTotalText.innerText = 'Estimated Total Price';
 
-let _estimatedTotalPrice = document.createElement("div");
+var _estimatedTotalPrice = document.createElement("div");
 _estimatedTotalPrice.id = 'estimated';
 _estimatedTotalPrice.className = 'w-[10%] h-full';
 _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substr(1)) - parseFloat(discountPrice.innerText.substr(1))).toFixed(2);
@@ -288,15 +317,25 @@ _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(ship
 estimatedTotalBox.appendChild(estimatedTotalText);
 estimatedTotalBox.appendChild(_estimatedTotalPrice);
 
-let checkoutButtonBox = document.createElement("div");
+var checkoutButtonBox = document.createElement("div");
 
-let checkoutButton = document.createElement("button");
+var checkoutButton = document.createElement("button");
 checkoutButton.className = "bg-gradient-to-r from-yellow-300 to-yellow-200 hover:from-yellow-400 hover:to-yellow-300 h-12 xl:w-1/4 w-1/3 shadow-md text-black font-bold text-lg mb-4 self-end mx-auto cursor-pointer shadow hover:shadow-xl transition-transform transform hover:scale-105"; 
 
 checkoutButton.innerText = "Checkout";
 
 checkoutButton.addEventListener("click", () => {
-    window.location.href = "payment.php";
+    let cart = JSON.parse(sessionStorage.getItem('usersCart'));
+
+    let str = "";
+    for (let i = 0, count = 1; i < cart.length; ++i, ++count) {
+        let amount = cart[i].item[5];
+        let item = cart[i].item[1];
+        str += `&qty${count}=${amount}`;
+        str += `&desc${count}=${item}`;
+    }
+
+    window.location.href = `payment.php?amount=${_estimatedTotalPrice.innerText}${str}`;
 });
 checkoutButtonBox.appendChild(checkoutButton);
 
@@ -308,3 +347,5 @@ checkoutBox.appendChild(discountBox);
 checkoutBox.appendChild(taxBox);
 checkoutBox.appendChild(estimatedTotalBox);
 checkoutBox.appendChild(checkoutButtonBox);
+
+}

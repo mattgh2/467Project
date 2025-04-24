@@ -3,6 +3,7 @@ include "dbconnect.php";
 require_once("utils.php");
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,7 +51,7 @@ require_once("utils.php");
           Payment Information
         </h2>
 
-        <form action="process_payment.php" method="POST" class="space-y-6">
+        <form action="./process_payment.php" method="POST" class="space-y-6">
           <!-- Name -->
           <div>
             <label class="block text-gray-700 font-semibold mb-1" for="name"
@@ -291,7 +292,7 @@ require_once("utils.php");
           <div class="flex gap-4">
             <div class="w-1/2">
               <label class="block text-gray-700 font-semibold mb-1" for="cc-exp"
-                >Exp Date (MM/YY)</label
+                >Exp Date (MM/YYYY)</label
               >
               <input
                 type="text"
@@ -318,7 +319,25 @@ require_once("utils.php");
               />
             </div>
           </div>
+          
 
+          <?php
+          $amounts = array();
+          $descriptions = array();
+
+            foreach ($_GET as $key=>$value]) {
+                if (str_contains($key, "qty")) {
+                    array_push($amount,$value);
+                }
+                else if (str_contains($key, "desc")) {
+                    array_push($descriptions,$value);
+                }
+            }
+        ?>
+
+          <input type="hidden" name='amount' value='<?=$_GET['amount']?>'>
+          <!-- <?="<input type='hidden' value=$amounts name=amounts>"?> -->
+          <!-- <?="<input type='hidden' value=$descriptions name=descriptions>"?> -->
           <!-- Submit Button -->
           <div class="text-center">
             <button
@@ -363,6 +382,12 @@ require_once("utils.php");
         </div>
       </div>
     </footer>
+    
+    <?php
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            print_r($_POST);
+        }
+    ?>
 
     <!-- JS for billing address toggle -->
     <script>
@@ -379,12 +404,3 @@ require_once("utils.php");
     </script>
   </body>
 </html>
-
-<!--
-      1. credit card auth
-      2. send email.
-      3. Put customer details in customers DB 
-      4. Clear js sessionStorage
-      5. Put order in orders DB 
-      6. Update quantity in Product DB
-->
