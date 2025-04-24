@@ -38,6 +38,23 @@ function createBracketsArray($pdo) : array {
 }
 
 function delete_from_DB($pdo, $lb, $rb) {
+    $brackets = createBracketsArray($pdo);
+    $rightBound = -1;
+    $leftBound = -1;
+    foreach ($brackets as $bracket) { 
+        if ($rb == 100000 && $bracket[1] == $lb) {
+            $leftBound = $bracket[0];
+        }
+        else if ($bracket[0] == $rb) {
+            $rightBound = $bracket[1];
+        }
+    }
+    if ($leftBound >= 0) {
+        $pdo->exec("update weightBrackets set RightBound = 100000 where LeftBound = $leftBound and RightBound = $lb");
+    }
+    else {
+        $pdo->exec("update weightBrackets set LeftBound = $lb where LeftBound = $rb and RightBound = $rightBound");
+    }
     $pdo->exec("DELETE FROM weightBrackets WHERE LeftBound=$lb AND RightBound=$rb");
 }
 
@@ -49,6 +66,43 @@ function check_no_brackets($pdo) {
     }
 }
 
+function get_orders($pdo) {
+    $query = "SELECT * FROM Orders;";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute();
+
+    return $prepare->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function complete_order($pdo, $order_id) {
+    $pdo->exec("DELETE FROM OrderProduct WHERE orderID=$order_id");
+    $pdo->exec("DELETE FROM Orders WHERE orderID=$order_id");
+}
+
+function get_products_from_orders($pdo, $order_id) {
+    $query = "SELECT productName FROM OrderProduct, Orders, Product WHERE OrderProduct.orderID = Orders.orderID AND OrderProduct.orderID = :id AND Product.productID = OrderProduct.productID;";
+    $prepare = $pdo->prepare($query);
+
+    $success = $prepare->execute(array(":id" => $order_id));
+    $tmp = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $product_list = array();
+    foreach($tmp as $product) {
+        $product_list[] = $product['productName'];
+    }
+    return $product_list;
+}
+
+function get_quantity_list_from_order_id($pdo, $order_id) {
+    $query = "SELECT qty FROM OrderProduct, Orders, Product WHERE OrderProduct.orderID = Orders.orderID AND OrderProduct.orderID = :id AND Product.productID = OrderProduct.productID;";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":id" => $order_id));
+    $tmp = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $quantity_list = array();
+    foreach($tmp as $quantity) {
+        $quantity_list[] = $quantity['qty'];
+    }
+    return $quantity_list;
+}
 
 function changeBrackets($pdo, $lb, $price) {
     $brackets = createBracketsArray($pdo);
@@ -81,31 +135,50 @@ function changeBrackets($pdo, $lb, $price) {
 }
 
 function insert_customer_data($pdo, $name, $email, $address) : string {
+
+    $prepared = $pdo->prepare("select customerId from Customer where customerName = :name and email = :email");
+    $res = $prepared->execute([":name" => $name, ":email" => $email]);
+
+    $res = $prepared->fetchAll(PDO::FETCH_ASSOC);
+    if (sizeof($res)) return $res['customerID'];
+
     $query = "INSERT INTO Customer (customerName, email, addr) VALUES (:name, :email, :address);";
     $prepare = $pdo->prepare($query);
     $success = $prepare->execute(array(":name" => $name, ":email" => $email, ":address" => $address));
 
-
     $prepared = $pdo->prepare("select customerID from Customer where customerName = :name and email = :email");
     $success = $prepared->execute(['name' => $name, 'email' => $email]);
     $res = $prepared->fetchAll(PDO::FETCH_ASSOC);
-    print_r($res);
+    return $res[0]["customerID"];
 }
 
-
+function getProductFromID($pdo, $productID) : string {
+    $prepare = $pdo->prepare("select description from parts where number = :productID");
+    $success = $prepare->execute([":productID" => $productID]);
+    return $prepare->fetch(PDO::FETCH_ASSOC)['description'];
+}
 
 function insert_order($pdo, $customer_id, $status="Not Completed") {
-    $query = "INSERT INTO Orders (customerID, orderStatus) VALUES (:id, :status);";
+    $date = date('Y-m-d');
+
+    $query = "INSERT INTO Orders (customerID, orderStatus, orderDate) VALUES (:id, :status, :orderDate);";
 
     $prepare = $pdo->prepare($query);
-    $success = $prepare->execute(array(":id" => $customer_id, ":status" => $status));
-    return $prepare->fetchAll(PDO::FETCH_ASSOC)['orderID'];
+    $success = $prepare->execute(array(":id" => $customer_id, ":status" => $status, ":orderDate" => $date));
+    $res = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+    $prepare = $pdo->prepare("select orderID from Orders where customerID = :customerID");
+    return $pdo->lastInsertId();
 }
 
 function insert_order_product($pdo, $order_number, $product_id, $qty) {
     $query = "INSERT INTO OrderProduct (orderID, productID, qty) VALUES (:order_number, :product_id, :qty);";
     $prepare = $pdo->prepare($query);
     $success = $prepare->execute(array(":order_number" => $order_number, ":product_id" => $product_id, ":qty" => $qty));
+
+    if ($success) {
+        $pdo->exec("UPDATE Product SET quantity=quantity-$qty WHERE productID=$product_id");
+    }
 }
 
 function createProductCard($part) : string {
@@ -171,7 +244,6 @@ function createProductCard($part) : string {
     </div>
     EOT;
     }
-
 
 ?>
 

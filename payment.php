@@ -322,14 +322,14 @@ require_once("utils.php");
           
           <?php
           $amounts = array();
-          $descriptions = array();
+          $ids = array();
 
             foreach ($_GET as $key => $value) {
                 if (str_contains($key, "qty")) {
                     array_push($amounts,$value);
                 }
-                else if (str_contains($key, "desc")) {
-                    array_push($descriptions,$value);
+                else if (str_contains($key, "itemID")) {
+                    array_push($ids,$value);
                 }
             }
         ?>
@@ -339,8 +339,8 @@ require_once("utils.php");
              <input type="hidden" name="amounts[]" value="<?=htmlspecialchars($amount)?>">
           <?php endforeach; ?>
 
-          <?php foreach ($descriptions as $i => $desc): ?>
-         <input type="hidden" name="descriptions[]" value="<?=htmlspecialchars($desc)?>">
+          <?php foreach ($ids as $i => $id): ?>
+         <input type="hidden" name="itemID[]" value="<?=htmlspecialchars($id)?>">
          <?php endforeach; ?>
 
           <!-- Submit Button -->

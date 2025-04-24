@@ -330,11 +330,10 @@ checkoutButton.addEventListener("click", () => {
     let str = "";
     for (let i = 0, count = 1; i < cart.length; ++i, ++count) {
         let amount = cart[i].item[5];
-        let item = cart[i].item[1];
+        let itemID = cart[i].id; 
         str += `&qty${count}=${amount}`;
-        str += `&desc${count}=${item}`;
+        str += `&itemID${count}=${itemID}`;
     }
-
     window.location.href = `payment.php?amount=${_estimatedTotalPrice.innerText}${str}`;
 });
 checkoutButtonBox.appendChild(checkoutButton);

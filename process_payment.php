@@ -4,25 +4,27 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 include "utils.php";
 require("dbconnect.php");
+session_start();
+$successfull = false;
 ?>
 
 <?php
-var_dump($_POST);
+echo $_SERVER['REQUEST_METHOD'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sample vendor ID (replace with your actual assigned vendor ID)
     $vendorId = 'Sigmas';
 
     $quantities = $_POST['amounts'];
-    $descriptions = $_POST['descriptions'];
+    $ids = $_POST['itemID'];
     
     $itemQuantityMap = array();
     for ($i = 0; $i < sizeof($quantities); ++$i) {
-        $itemQuantityMap[$descriptions[$i]] = $quantities[$i];
+        $itemQuantityMap[$ids[$i]] = [$quantities[$i],getProductFromID($pdoLegacy,$ids[$i])];
     }
-
     print_r($itemQuantityMap);
 
-    //ST data
+    //POST data
     $name = $_POST['name'];
     $email = $_POST['email'];
     $address = $_POST['address'];
@@ -63,16 +65,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<h2 style='color:red;'>Payment Error:</h2><p  class='text-5xl'>$capture_space[1]</p>";
     } else if (preg_match($re2, $result, $capture_space)) {
         echo "<h2 style='color:green;'>Payment Authorized!</h2><p>Authorization Number: $capture_space[1]</p>";
+        $successfull = true;
         $customer_id = insert_customer_data($pdoInventory, $name, $email, $address);
         $order_id = insert_order($pdoInventory, $customer_id);
+
+        foreach($itemQuantityMap as $productID => $a) {
+            insert_order_product($pdoInventory, $order_id, $productID, $a[0]);
+        }
+        header('Location: ./order_complete.php?confirmation=' . urlencode($capture_space[1]) . "&email=" . urlencode($email));
+        exit;
     } else {
         echo "Error";
     }
 } else {
     echo "Invalid request method.";
 }
-
-
 //      1. credit card auth (payment processing system) -- COMPLETE
 //      2. alert that an email was sent.
 //      4. Clear js sessionStorage
@@ -84,3 +91,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // INsert customer name, email, address into Customer,
 // Insert CustomerId, orderDate,orderStatus into Orders
 // Insert orderID ProductID into OrderProduct
+?>
+

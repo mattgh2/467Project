@@ -55,12 +55,23 @@ require_once('utils.php');
   </nav>
   
     <div class="w-screen h-screen flex justify-center items-center gap-10"> 
-        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
+        <div id="orders" class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
             <a href="./orders.php" class="text-2xl font-semibold text-center">View Orders</a>     
         </div>
-        <div class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
+        <div id="weights" class="bg-white rounded-2xl w-[20%] h-[20%] shadow-md cursor-pointer hover:shadow-xl flex items-center justify-center transition-colors transform duration-300 ease-in-out hover:bg-slate-300">
         <a href="./weights.php" class="text-2xl font-semibold text-center">View and Set Weight Brackets</a> 
         </div>
     </div>
+    <script>
+      let orders = document.getElementById("orders");
+      let weights = document.getElementById("weights");
+
+      orders.addEventListener("click",()=> {
+          window.location.href = "./orders.php";
+      });
+      weights.addEventListener("click",()=> {
+          window.location.href = "./weights.php";
+      });
+    </script>
 
 </body></head>
