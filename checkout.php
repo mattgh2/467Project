@@ -23,7 +23,7 @@ include "utils.php";
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen m-0 bg-radial-layered min-h-screen">
+<body class="w-screen m-0 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 font-sans">
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
     <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">

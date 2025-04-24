@@ -320,14 +320,13 @@ require_once("utils.php");
             </div>
           </div>
           
-
           <?php
           $amounts = array();
           $descriptions = array();
 
-            foreach ($_GET as $key=>$value]) {
+            foreach ($_GET as $key => $value) {
                 if (str_contains($key, "qty")) {
-                    array_push($amount,$value);
+                    array_push($amounts,$value);
                 }
                 else if (str_contains($key, "desc")) {
                     array_push($descriptions,$value);
@@ -336,8 +335,14 @@ require_once("utils.php");
         ?>
 
           <input type="hidden" name='amount' value='<?=$_GET['amount']?>'>
-          <!-- <?="<input type='hidden' value=$amounts name=amounts>"?> -->
-          <!-- <?="<input type='hidden' value=$descriptions name=descriptions>"?> -->
+          <?php foreach ($amounts as $i => $amount): ?>
+             <input type="hidden" name="amounts[]" value="<?=htmlspecialchars($amount)?>">
+          <?php endforeach; ?>
+
+          <?php foreach ($descriptions as $i => $desc): ?>
+         <input type="hidden" name="descriptions[]" value="<?=htmlspecialchars($desc)?>">
+         <?php endforeach; ?>
+
           <!-- Submit Button -->
           <div class="text-center">
             <button

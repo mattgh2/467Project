@@ -2,6 +2,8 @@
 // Show all errors (for debugging; remove on production)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+include "utils.php";
+require("dbconnect.php");
 ?>
 
 <?php
@@ -10,8 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sample vendor ID (replace with your actual assigned vendor ID)
     $vendorId = 'Sigmas';
 
-    // Get POST data
+    $quantities = $_POST['amounts'];
+    $descriptions = $_POST['descriptions'];
+    
+    $itemQuantityMap = array();
+    for ($i = 0; $i < sizeof($quantities); ++$i) {
+        $itemQuantityMap[$descriptions[$i]] = $quantities[$i];
+    }
+
+    print_r($itemQuantityMap);
+
+    //ST data
     $name = $_POST['name'];
+    $email = $_POST['email'];
+    $address = $_POST['address'];
     $cc = $_POST['cc_number']; // Make sure your form includes this field
     $exp = $_POST['cc_exp']; // Add this field to the form if missing
     $amount = $_POST['amount']; // Also add this field if missing
@@ -49,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<h2 style='color:red;'>Payment Error:</h2><p  class='text-5xl'>$capture_space[1]</p>";
     } else if (preg_match($re2, $result, $capture_space)) {
         echo "<h2 style='color:green;'>Payment Authorized!</h2><p>Authorization Number: $capture_space[1]</p>";
+        $customer_id = insert_customer_data($pdoInventory, $name, $email, $address);
+        $order_id = insert_order($pdoInventory, $customer_id);
     } else {
         echo "Error";
     }

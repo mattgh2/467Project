@@ -24,7 +24,7 @@ require_once('utils.php');
     <title>Lite Up Ur Lyfe Auto Parts</title>
 </head>
 
-<body class="w-screen h-screen m-0 bg-radial-layered">
+<body class="w-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50  font-sans">
   <!-- Navbar -->
   <nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
     <div class="flex h-[75px] w-full justify-between bg-gradient-to-bl from-[#9dd8f8] from-5% via-[#55baf2] to-[#9dd8f8]">
@@ -84,16 +84,16 @@ require_once('utils.php');
   </nav>
   <div class="w-2/3 max-w-2xl h-12 mt-48 mx-auto flex justify-center">
   <input id="search-bar" type="text" 
-    class="w-full h-full px-4 text-black bg-[#e9f1f5] placeholder-#a0a2a3 focus:outline-2px rounded-l-full" 
+    class="w-full h-full px-4 text-black bg-white placeholder-[#a0a2a3] focus:outline-none outline-sky-300 rounded-l-full" 
     placeholder="Search an item...">
   <button id="search-button"
-    class="w-12 h-full flex justify-center items-center text-white bg-gradient-to-r from-[#55baf2] to-[#9dd8f8] rounded-r-full hover:opacity-80">
+    class="w-12 h-full flex justify-center items-center text-white bg-[#55baf2] rounded-r-full hover:opacity-80">
     <i class="fa fa-search" aria-hidden="true"></i>
   </button>
 </div>
 
 <?php
-    echo "<div class=\"h-screen grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-12 \">";
+    echo "<div class=\" grid 2xl:grid-cols-5  grid-cols-3 gap-4 gap-x-10 p-6 auto-rows-[40vh] mt-12 \">";
         foreach ($parts as $part) echo createProductCard($part);
     echo "</div>";
 ?>

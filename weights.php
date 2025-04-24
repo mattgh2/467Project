@@ -17,7 +17,7 @@ require_once('utils.php');
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body class="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-100 min-h-screen font-sans">
+<body class="w-screen h-screen m-0 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 min-h-screen font-sans">
 
   <!-- Navbar -->
   <nav class="fixed top-0 left-0 z-50 w-full shadow-md">
@@ -46,13 +46,13 @@ require_once('utils.php');
       <input required type="number" name="price" placeholder="Price"
         class="flex-1 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" min="0">
       <input type="submit" value="Add Bracket"
-        class="bg-blue-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-600 transition-colors cursor-pointer">
+        class="bg-blue-400 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-500 transition-colors cursor-pointer">
     </form>
 
     <!-- Brackets Table -->
     <div class="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden">
       <table class="w-full table-auto">
-        <thead class="bg-blue-100 text-left text-blue-800">
+        <thead class="bg-blue-300 text-left text-gray-800">
           <tr>
             <th class="px-6 py-4">Left Bound</th>
             <th class="px-12 py-4 whitespace-nowrap">Right Bound</th>

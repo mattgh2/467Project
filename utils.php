@@ -1,4 +1,6 @@
 <?php
+include "dbconnect.php";
+
 function  query_parts() : array {
     global $pdoLegacy;
     return $pdoLegacy->query("select * from parts")->fetchAll(PDO::FETCH_ASSOC);
@@ -79,15 +81,18 @@ function changeBrackets($pdo, $lb, $price) {
 }
 
 function insert_customer_data($pdo, $name, $email, $address) : string {
-    $query = "INSERT INTO Customer VALUES (:name, :email, :address);";
+    $query = "INSERT INTO Customer (customerName, email, addr) VALUES (:name, :email, :address);";
     $prepare = $pdo->prepare($query);
     $success = $prepare->execute(array(":name" => $name, ":email" => $email, ":address" => $address));
 
 
-    $prepared = $pdo->prepare("select customerID from Customer where name = :name and email = :email");
-    $success = $pdo->execute(['name' => $name, 'email' => $email]);
-    return $prepared->fetchALL(PDO::FETCH_ASSOC)['customerID'];
+    $prepared = $pdo->prepare("select customerID from Customer where customerName = :name and email = :email");
+    $success = $prepared->execute(['name' => $name, 'email' => $email]);
+    $res = $prepared->fetchAll(PDO::FETCH_ASSOC);
+    print_r($res);
 }
+
+
 
 function insert_order($pdo, $customer_id, $status="Not Completed") {
     $query = "INSERT INTO Orders (customerID, orderStatus) VALUES (:id, :status);";
