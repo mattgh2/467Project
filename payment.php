@@ -323,6 +323,7 @@ require_once("utils.php");
           <?php
           $amounts = array();
           $ids = array();
+          $prices = array();
 
             foreach ($_GET as $key => $value) {
                 if (str_contains($key, "qty")) {
@@ -331,16 +332,22 @@ require_once("utils.php");
                 else if (str_contains($key, "itemID")) {
                     array_push($ids,$value);
                 }
+                else if (str_contains($key, "price")) {
+                    array_push($prices,$value);
+                }
             }
         ?>
 
           <input type="hidden" name='amount' value='<?=$_GET['amount']?>'>
+          <input type="hidden" name='shippingCost' value='<?=$_GET['shippingCost']?>'>
           <?php foreach ($amounts as $i => $amount): ?>
              <input type="hidden" name="amounts[]" value="<?=htmlspecialchars($amount)?>">
           <?php endforeach; ?>
-
           <?php foreach ($ids as $i => $id): ?>
          <input type="hidden" name="itemID[]" value="<?=htmlspecialchars($id)?>">
+         <?php endforeach; ?>
+          <?php foreach ($prices as $i => $price): ?>
+         <input type="hidden" name="prices[]" value="<?=htmlspecialchars($price)?>">
          <?php endforeach; ?>
 
           <!-- Submit Button -->
@@ -390,7 +397,7 @@ require_once("utils.php");
     
     <?php
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            print_r($_POST);
+            // print_r($_POST);
         }
     ?>
 

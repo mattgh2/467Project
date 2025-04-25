@@ -19,6 +19,10 @@ function query_quantities($pdo) : array {
     }    
     return $ret;
 }
+function getPartQuantities($pdo) : array {
+    return $pdo->query("select * from Product")->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function queryItemQuantity($pdo,$id) : string {
     $query = $pdo->prepare("select quantity from Product where productID = :id");
     $prepared = $query->execute(['id' => $id]);
@@ -104,6 +108,13 @@ function get_quantity_list_from_order_id($pdo, $order_id) {
     return $quantity_list;
 }
 
+function get_name_qty_and_price($pdo, $order_id) {
+    $query = "SELECT productName, qty, price FROM Product, OrderProduct WHERE OrderProduct.productID = Product.productID AND OrderProduct.orderID = :id";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":id" => $order_id));
+    return $prepare->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function changeBrackets($pdo, $lb, $price) {
     $brackets = createBracketsArray($pdo);
     $idx = 0;
@@ -134,17 +145,16 @@ function changeBrackets($pdo, $lb, $price) {
     $pdo->exec($insert);
 }
 
-function insert_customer_data($pdo, $name, $email, $address) : string {
-
+function insert_customer_data($pdo, $name, $email, $address, $city, $state, $zip) : string {
     $prepared = $pdo->prepare("select customerId from Customer where customerName = :name and email = :email");
     $res = $prepared->execute([":name" => $name, ":email" => $email]);
 
     $res = $prepared->fetchAll(PDO::FETCH_ASSOC);
-    if (sizeof($res)) return $res['customerID'];
+    if (sizeof($res)) return $res[0]['customerId'];
 
-    $query = "INSERT INTO Customer (customerName, email, addr) VALUES (:name, :email, :address);";
+    $query = "INSERT INTO Customer (customerName, email, addr, City, State, Zip) VALUES (:name, :email, :address, :city, :state, :zip);";
     $prepare = $pdo->prepare($query);
-    $success = $prepare->execute(array(":name" => $name, ":email" => $email, ":address" => $address));
+    $success = $prepare->execute(array(":name" => $name, ":email" => $email, ":address" => $address, ":city" => $city, "state" => $state, "zip" => $zip));
 
     $prepared = $pdo->prepare("select customerID from Customer where customerName = :name and email = :email");
     $success = $prepared->execute(['name' => $name, 'email' => $email]);
@@ -158,27 +168,51 @@ function getProductFromID($pdo, $productID) : string {
     return $prepare->fetch(PDO::FETCH_ASSOC)['description'];
 }
 
-function insert_order($pdo, $customer_id, $status="Not Completed") {
+function insert_order($pdo, $customer_id, $amount, $shipping_cost,  $status="Authorized") {
     $date = date('Y-m-d');
 
-    $query = "INSERT INTO Orders (customerID, orderStatus, orderDate) VALUES (:id, :status, :orderDate);";
+    $query = "INSERT INTO Orders (customerID, orderStatus, orderDate, amount, ShippingCost) VALUES (:id, :status, :orderDate, :amount, :shipping_cost);";
 
     $prepare = $pdo->prepare($query);
-    $success = $prepare->execute(array(":id" => $customer_id, ":status" => $status, ":orderDate" => $date));
+    $success = $prepare->execute(array(":id" => $customer_id, ":status" => $status, ":orderDate" => $date, ":amount" => $amount, ":shipping_cost" => $shipping_cost));
     $res = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
     $prepare = $pdo->prepare("select orderID from Orders where customerID = :customerID");
     return $pdo->lastInsertId();
 }
 
-function insert_order_product($pdo, $order_number, $product_id, $qty) {
-    $query = "INSERT INTO OrderProduct (orderID, productID, qty) VALUES (:order_number, :product_id, :qty);";
+function set_shipped($pdo, $order_id) {
+    $query = "UPDATE Orders SET orderStatus = Shipped WHERE orderID = :id";
     $prepare = $pdo->prepare($query);
-    $success = $prepare->execute(array(":order_number" => $order_number, ":product_id" => $product_id, ":qty" => $qty));
+    $success = $prepare->execute(array(":id" => $order_id));
+}
+
+function insert_order_product($pdo, $order_number, $product_id, $qty, $price) {
+    $query = "INSERT INTO OrderProduct (orderID, productID, qty, Price) VALUES (:order_number, :product_id, :qty, :price);";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":order_number" => $order_number, ":product_id" => $product_id, ":qty" => $qty, ":price" => $price));
 
     if ($success) {
         $pdo->exec("UPDATE Product SET quantity=quantity-$qty WHERE productID=$product_id");
     }
+}
+function getCustomerIDfromOrderId($pdo, $orderID) : string {
+    $prepare = $pdo->prepare("select customerID from Orders where orderID = :orderid");
+    $succ = $prepare->execute(["orderid" => $orderID]);
+    $tmp = $prepare->fetch(PDO::FETCH_NUM)[0];
+    return "$tmp";
+} 
+
+function getCustomerInfo($pdo, $customerID) {
+    $prepare = $pdo->prepare("select * from Customer where customerID = :id");
+    $success = $prepare->execute([":id" => $customerID]);
+    return $prepare->fetch(PDO::FETCH_ASSOC);
+}
+
+function update_quantity($pdo, $qty, $id) {
+    $query = "UPDATE Product SET quantity=quantity+:qty WHERE productID=:id";
+    $prepare = $pdo->prepare($query);
+    $success = $prepare->execute(array(":qty" => $qty, ":id" => $id));
 }
 
 function createProductCard($part) : string {

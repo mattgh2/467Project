@@ -333,8 +333,9 @@ checkoutButton.addEventListener("click", () => {
         let itemID = cart[i].id; 
         str += `&qty${count}=${amount}`;
         str += `&itemID${count}=${itemID}`;
+        str += `&price${count}=${cart[i].item[2] * cart[i].item[5]}`;
     }
-    window.location.href = `payment.php?amount=${_estimatedTotalPrice.innerText}${str}`;
+    window.location.href = `payment.php?amount=${_estimatedTotalPrice.innerText.substring(1)}${str}&shippingCost=${shippingCostPrice.innerText.substring(1)}`;
 });
 checkoutButtonBox.appendChild(checkoutButton);
 

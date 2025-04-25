@@ -17,22 +17,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $quantities = $_POST['amounts'];
     $ids = $_POST['itemID'];
+    $prices = $_POST['prices'];
     
     $itemQuantityMap = array();
     for ($i = 0; $i < sizeof($quantities); ++$i) {
-        $itemQuantityMap[$ids[$i]] = [$quantities[$i],getProductFromID($pdoLegacy,$ids[$i])];
+        $itemQuantityMap[$ids[$i]] = [$quantities[$i],getProductFromID($pdoLegacy,$ids[$i]), $prices[$i]];
     }
-    print_r($itemQuantityMap);
+
 
     //POST data
     $name = $_POST['name'];
     $email = $_POST['email'];
     $address = $_POST['address'];
-    $cc = $_POST['cc_number']; // Make sure your form includes this field
-    $exp = $_POST['cc_exp']; // Add this field to the form if missing
-    $amount = $_POST['amount']; // Also add this field if missing
-
-    // You can also validate and sanitize inputs here
+    $cc = $_POST['cc_number']; 
+    $exp = $_POST['cc_exp']; 
+    $amount = $_POST['amount']; 
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zip = $_POST['zip'];
+    $shippingCost = $_POST['shippingCost'];
 
     // Create a unique transaction ID
     $transactionId = uniqid('trans-', true);
@@ -66,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else if (preg_match($re2, $result, $capture_space)) {
         echo "<h2 style='color:green;'>Payment Authorized!</h2><p>Authorization Number: $capture_space[1]</p>";
         $successfull = true;
-        $customer_id = insert_customer_data($pdoInventory, $name, $email, $address);
-        $order_id = insert_order($pdoInventory, $customer_id);
+        $customer_id = insert_customer_data($pdoInventory, $name, $email, $address, $city, $state, $zip);
+        $order_id = insert_order($pdoInventory, $customer_id, $amount, $shippingCost);
 
         foreach($itemQuantityMap as $productID => $a) {
-            insert_order_product($pdoInventory, $order_id, $productID, $a[0]);
+            insert_order_product($pdoInventory, $order_id, $productID, $a[0], $a[2]);
         }
         header('Location: ./order_complete.php?confirmation=' . urlencode($capture_space[1]) . "&email=" . urlencode($email));
         exit;
