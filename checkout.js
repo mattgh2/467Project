@@ -171,7 +171,8 @@ for (let i = 0; i < usersCart.length; ++i) {
     _topTotalPrice.innerText = "$" +  (currentItem[2] * parseInt(currentItem[5])).toFixed(2);
     _topTotalWeight.innerText = parseFloat(currentItem[5] * currentItem[3]).toFixed(2) + " lbs";
     shippingCostPrice.innerText = '$' + calculateShipping(_brackets, weightTotal).toFixed(2);
-    taxPrice.innerText = '$' + (0.05 * (parseFloat(currentItem[2])* parseInt(currentItem[5]))).toFixed(2);
+    let _estimatedTotalPriceNOTAX = (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) - parseFloat(discountPrice.innerText.substring(1))).toFixed(2);
+    taxPrice.innerText =  '$' + (0.05 * _estimatedTotalPriceNOTAX).toFixed(2);
     _estimatedTotalPrice.innerText = '$' + (parseFloat(priceTotal) + parseFloat(shippingCostPrice.innerText.substring(1)) + parseFloat(taxPrice.innerText.substring(1)) - parseFloat(discountPrice.innerText.substring(1))).toFixed(2);
   });
 
@@ -297,8 +298,8 @@ taxText.innerText = 'Tax';
 
 var taxPrice = document.createElement("div");
 taxPrice.className = 'w-[10%] h-full';
-taxPrice.innerText = '$' + (0.05 * (parseFloat(price)* parseInt(quantity))).toFixed(2);
-
+taxPrice.innerText = '$' + (0.05 * (parseFloat(priceTotal))).toFixed(2);
+ 
 taxBox.appendChild(taxText);
 taxBox.appendChild(taxPrice);
 

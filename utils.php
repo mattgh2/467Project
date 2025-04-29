@@ -132,12 +132,16 @@ function changeBrackets($pdo, $lb, $price) {
         $i++;
     }
 
-    if ($found) {
-        return;
-    }
+    
 
     $left = $brackets[$idx][0];
     $right = $brackets[$idx][1];
+    $p = $brackets[$idx][2];
+
+    if ($found) {
+        $pdo->exec("UPDATE weightBrackets SET Price=$price WHERE LeftBound = $lb");
+        return;
+    }
 
     $update = "update weightBrackets set RightBound = $lb where LeftBound = $left and RightBound = $right";
     $insert = "INSERT INTO weightBrackets (LeftBound, RightBound, Price) VALUES ($lb, $right, $price)";

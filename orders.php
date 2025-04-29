@@ -48,19 +48,28 @@ require_once('utils.php');
 
 <!-- Navbar -->
 <nav class="fixed top-0 left-0 z-50 w-full shadow-md">
+
+<nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
   <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
     <a href="./" class="text-white text-2xl">
       <i class="fa fa-home"></i>
     </a>
     <ul class="flex gap-6 text-white text-lg">
       <li class="group relative">
-        <a class="cursor-pointer">
-          <i class="fa fa-lock"></i> Warehouse
+        <a href="warehouse.php" class="cursor-pointer">
+          <i class="pb-1 inline-block relative"></i> Warehouse
+          <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
+        </a>
+      </li>
+      <li class="group relative">
+        <a href="weights.php" class="cursor-pointer">
+          <i class="pb-1 inline-block relative"></i> View and Set Weight Brackets
           <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
         </a>
       </li>
     </ul>
   </div>
+</nav>
 </nav>
 
 <div class="pt-24 px-4 flex flex-col items-center gap-10">
@@ -81,15 +90,15 @@ require_once('utils.php');
     <div class="relative">
       <label>
         Price from:
-        <span class="absolute left-2 top-9 text-gray-500 pointer-events-none">$</span>
-        <input type="number" id="minPrice" class="pl-5 border rounded p-1" value="0" min="0" />
+        <span class="absolute left-22 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">$</span>
+        <input type="number" id="minPrice" class="pl-6 border rounded p-1" value="0" min="0" />
       </label>
     </div>
     <div class="relative">
       <label>
         to:
-        <span class="absolute left-2 top-9 text-gray-500 pointer-events-none">$</span>
-        <input type="number" id="maxPrice" class="pl-5 border rounded p-1" value="99999" min="0" />
+        <span class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">$</span>
+        <input type="number" id="maxPrice" class="pl-6 border rounded p-1" value="99999" min="0" />
       </label>
     </div>
     <div>
@@ -184,34 +193,34 @@ require_once('utils.php');
   }
 
   function viewDetails(orderID) {
-    const row = [...document.querySelectorAll("tbody tr")].find(r => r.cells[0].innerText == orderID);
-    if (!row) return;
+    const popup = document.getElementById("orderPopup");
+    const popupContent = document.getElementById("popupContent");
+    const orderDetails = getOrderDetails(orderID);
 
-    const customerID = row.cells[1].innerText;
-    const products = row.cells[2].innerText;
-    const amount = row.cells[3].innerText;
-    const date = row.cells[4].innerText;
-    const status = row.cells[5].innerText;
+    document.getElementById("popupMeta").innerText = `Order ID: ${orderDetails.orderID}\nCustomer ID: ${orderDetails.customerID}`;
+    document.getElementById("popupItems").innerHTML = generateOrderItemsList(orderDetails.items);
 
-    document.getElementById("popupMeta").innerHTML = `
-      <p><strong>Order ID:</strong> ${orderID}</p>
-      <p><strong>Customer ID:</strong> ${customerID}</p>
-      <p><strong>Date:</strong> ${date}</p>
-      <p><strong>Status:</strong> ${status}</p>
-      <p><strong>Amount:</strong> ${amount}</p>
-    `;
-
-    const itemsHTML = products
-      .split(",")
-      .map(item => `<p>${item.trim()}</p>`)
-      .join("");
-
-    document.getElementById("popupItems").innerHTML = itemsHTML;
-    document.getElementById("orderPopup").classList.remove("hidden");
+    popup.classList.remove("hidden");
   }
 
   function closePopup() {
     document.getElementById("orderPopup").classList.add("hidden");
+  }
+
+  function generateOrderItemsList(items) {
+    return items.map(item => `<div>${item.quantity} x ${item.name} - $${item.price}</div>`).join('');
+  }
+
+  function getOrderDetails(orderID) {
+    // Replace with actual logic to retrieve order details
+    return {
+      orderID: orderID,
+      customerID: '12345',
+      items: [
+        { name: 'Part A', quantity: 2, price: 50 },
+        { name: 'Part B', quantity: 1, price: 100 }
+      ]
+    };
   }
 </script>
 

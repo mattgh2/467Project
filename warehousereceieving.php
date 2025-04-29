@@ -20,22 +20,25 @@ $parts = getAllParts();
 </head>
 <body class="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 min-h-screen font-sans">
 
-  <!-- Navbar -->
-  <nav class="fixed top-0 left-0 z-50 w-full shadow-md">
-    <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
-      <a href="./" class="text-white text-2xl">
-        <i class="fa fa-home"></i>
-      </a>
-      <ul class="flex gap-6 text-white text-lg">
-        <li class="group relative">
-          <a class="cursor-pointer">
-            <i class="fa fa-lock"></i> Warehouse
-            <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 z-50 w-full shadow-md">
+
+<nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
+  <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
+    <a href="./" class="text-white text-2xl">
+      <i class="fa fa-home"></i>
+    </a>
+    <ul class="flex gap-6 text-white text-lg">
+      <li class="group relative">
+        <a href="./warehouseorders.php" class="cursor-pointer">
+          <i class="pb-1 inline-block relative"></i> Warehouse Orders
+          <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+</nav>
 
   <!-- Page Content -->
   <main class="pt-24 px-4 max-w-5xl mx-auto">

@@ -46,7 +46,7 @@ include "utils.php";
             </a>
           </li>
           <li>
-            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+            <a href='signinwarehouse.php' class="group relative cursor-pointer text-xl text-white transition-all duration-300">
               <span class="pb-1 inline-block relative">
                 <i class="fa fa-lock" aria-hidden="true"></i> Warehouse
                 <!-- Left underline -->
@@ -57,7 +57,7 @@ include "utils.php";
             </a>
           </li>
           <li>
-            <a class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+            <a href='signin.php' class="group relative cursor-pointer text-xl text-white transition-all duration-300">
               <span class="pb-1 inline-block relative">
                 <i class="fa fa-lock" aria-hidden="true"></i> Admin
                 <!-- Left underline -->

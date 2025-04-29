@@ -62,22 +62,31 @@ foreach($orders as $order) {
 </head>
 <body class="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 min-h-screen font-sans">
 
-  <!-- Navbar -->
-  <nav class="fixed top-0 left-0 z-50 w-full shadow-md">
-    <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
-      <a href="./" class="text-white text-2xl">
-        <i class="fa fa-home"></i>
-      </a>
-      <ul class="flex gap-6 text-white text-lg">
-        <li class="group relative">
-          <a class="cursor-pointer">
-            <i class="fa fa-lock"></i> Warehouse
-            <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 z-50 w-full shadow-md">
+
+<nav id="nav-bar" class="fixed top-0 left-0 z-50 w-full">
+  <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-bl from-[#9dd8f8] via-[#55baf2] to-[#9dd8f8]">
+    <a href="./" class="text-white text-2xl">
+      <i class="fa fa-home"></i>
+    </a>
+    <ul class="flex gap-6 text-white text-lg">
+      <li class="group relative">
+        <a href="./admin.php" class="cursor-pointer">
+          <i class="pb-1 inline-block relative"></i> Admin
+          <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
+        </a>
+      </li>
+      <li class="group relative">
+        <a href="./warehousereceiving.php" class="cursor-pointer">
+          <i class="pb-1 inline-block relative"></i> Warehouse Receiving
+          <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all group-hover:w-full group-hover:left-0"></span>
+        </a>
+    </ul>
+  </div>
+</nav>
+</nav>
+
 
   <!-- Page Content -->
   <main class="pt-24 px-4 max-w-4xl mx-auto">
@@ -168,14 +177,18 @@ foreach($orders as $order) {
     back.className = "w-8 h-8 bg-red-600 text-white text-center rounded-md shadow-md flex justify-center items-center mt-1 mr-1 cursor-pointer";
     back.innerHTML = '<i class="fa text-center fa-times" aria-hidden="true"></i>';
 
+
     let order_back_container = document.createElement("div");
-    order_back_container.className = 'w-full h-[10%] flex';
+    order_back_container.className = 'w-full h-[10%] flex ';
+
+    let order_pad = document.createElement("div");
+    order_pad.className = 'w-1/3 h-full';
 
     let order_number_container = document.createElement("div");
-    order_number_container.className = 'w-[65%] h-full flex  justify-end items-center';
+    order_number_container.className = 'w-1/3 h-full flex  justify-center items-center';
 
     let back_container = document.createElement("div");
-    back_container.className = 'w-[35%] h-full flex justify-end';
+    back_container.className = 'w-1/3 h-full flex justify-end';
 
     let order_number = document.createElement("p");
     order_number.className = 'text-lg';
@@ -213,11 +226,12 @@ foreach($orders as $order) {
     for (let [key,value] of Object.entries(packing_list)) {
       let info_box = document.createElement("p");
       info_box.className = 'ml-[2%]';
-      info_box.innerText = `(${value['qty']}) ` + value["productName"] + '  $' + value["price"] * value['qty'];
+      info_box.innerText = `(${value['qty']}) ` + value["productName"] + '  $' + value["price"];
       invoice_container.appendChild(info_box);
     }
     let amount_box = document.createElement("p");
     amount_box.className = 'ml-[2%]';
+    other_order_stuff[0] = other_order_stuff[0] - other_order_stuff[1];
     amount_box.innerText = 'Amount: ' + '$' + other_order_stuff[0];
 
     let shipping_cost_text = document.createElement("p");
@@ -272,9 +286,11 @@ foreach($orders as $order) {
     markDoneButton.innerText = "Mark as Fulfilled";
     d.appendChild(markDoneButton);
 
+    order_back_container.appendChild(order_pad);
     order_back_container.appendChild(order_number_container);
     order_back_container.appendChild(back_container);
     order_number_container.appendChild(order_number);
+
 
     back_container.appendChild(back);
 

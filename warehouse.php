@@ -37,9 +37,9 @@ require_once('utils.php');
     <div class="mr-[2%] flex h-full max-w-md">
       <ul class="flex h-full items-center justify-center gap-10">
         <li>
-          <a href="signinwarehouse.php" class="group relative cursor-pointer text-xl text-white transition-all duration-300">
+          <a href="signin.php" class="group relative cursor-pointer text-xl text-white transition-all duration-300">
             <span class="pb-1 inline-block relative">
-              Warehouse
+              Admin
               <span class="absolute left-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
               <span class="absolute right-1/2 bottom-0 h-0.5 w-0 bg-white transition-all duration-300 ease-in-out transform -translate-x-1/2 group-hover:w-1/2 group-hover:translate-x-0"></span>
             </span>
@@ -56,14 +56,14 @@ require_once('utils.php');
 
       <!-- View Orders Card -->
       <div id="orders" class="group bg-white text-gray-800 rounded-2xl shadow-lg hover:shadow-2xl p-12 min-w-[300px] h-[220px] flex flex-col items-center justify-center transform hover:-translate-y-2 transition-all duration-300 cursor-pointer hover:bg-blue-100">
-        <i class="fa fa-file-text-o text-5xl mb-4 group-hover:text-blue-600"></i>
-        <a href="./orders.php" class="text-2xl font-semibold text-center">View Orders</a>
+        <i class="fa fa-hand-o-down text-5xl mb-4 group-hover:text-blue-600"></i>
+        <a href="./warehousereceiving.php" class="text-2xl font-semibold text-center">Warehouse Receiving</a>
       </div>
 
       <!-- View and Set Weights Card -->
       <div id="weights" class="group bg-white text-gray-800 rounded-2xl shadow-lg hover:shadow-2xl p-12 min-w-[300px] h-[220px] flex flex-col items-center justify-center transform hover:-translate-y-2 transition-all duration-300 cursor-pointer hover:bg-blue-100">
-        <i class="fa fa-balance-scale text-5xl mb-4 group-hover:text-blue-600"></i>
-        <a href="./weights.php" class="text-2xl font-semibold text-center">View and Set Weight Brackets</a>
+        <i class="fa fa-truck text-5xl mb-4 group-hover:text-blue-600"></i>
+        <a href="./warehouseorders.php" class="text-2xl font-semibold text-center">Order Fulfillment</a>
       </div>
 
     </div>
@@ -71,10 +71,10 @@ require_once('utils.php');
 
   <script>
     document.getElementById("orders").addEventListener("click", () => {
-      window.location.href = "./orders.php";
+      window.location.href = "./warehousereceiving.php";
     });
     document.getElementById("weights").addEventListener("click", () => {
-      window.location.href = "./weights.php";
+      window.location.href = "./warehouseorders.php";
     });
   </script>
 
